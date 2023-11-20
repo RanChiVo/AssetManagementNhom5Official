@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+# Put this script in .git/hooks/ to automatically update servername when
+# checking out
+
+SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+ROOT_PROJECT=$(realpath "$SCRIPTPATH/../..")
+
+# Fill out config file before execute this script
+# Example on my machine:
+# 
+# in "$ROOT_PROJECT/hooks/config"
+#
+# serverName='DESKTOP-MHP3QUM\\NEARSQL'
+# msbuild='C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe'
+#
+CONFIG_FILE="$ROOT_PROJECT/.git/hooks/config"
+
+. "$CONFIG_FILE"
+
+function trackedByGit() {
+    local path="$1"
+    git ls-files --error-unmatch "$path" 2>/dev/null # 0 - tracked, 1 - untracked
+    return $?
+}
+
+# Tạo file servername trong thư mục hiện tại với 1 dòng là tên SQL server name vd: DESKTOP-MHP3QUM\\NEARSQL
+# LƯU Ý: nhớ escape ký tự '\' (DESKTOP-MHP3QUM\\NEARSQL chứ không phải DESKTOP-MHP3QUM\NEARSQL)
+function changeServerName() {
+    local paths=(
+        'aspnet-core\src\GSoft.AbpZeroTemplate.Web.Mvc\appsettings.json'
+        'aspnet-core\src\GSoft.AbpZeroTemplate.Web.Host\appsettings.json'
+    )
+    serverName=${serverName//\\/\\\\}
+
+    for path in "${paths[@]}"; do
+        sed -i -E 's|(Server=).*(; Database=DbCS; Trusted_Connection=True;)|\1'$serverName'\2|' "$path"
+        
+        if trackedByGit "$path"; then
+            git update-index --assume-unchanged "$path"
+        fi
+    done
+}
+
+function main() {
+    changeServerName
+}
+
+main

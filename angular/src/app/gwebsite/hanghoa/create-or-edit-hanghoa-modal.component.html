@@ -1,0 +1,67 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form ngNativeValidate #editForm="ngForm" (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="hanghoa.id">Cập nhật hàng hóa: {{hanghoa.goodsName}}</span>
+                        <span *ngIf="!hanghoa.id">Tạo mới hàng hóa</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Mã hàng hóa *</label>
+                        <input #addressInput="ngModel" class="form-control" type="text" name="maHangHoa"
+                               [(ngModel)]="hanghoa.goodsCode" required maxlength="64">
+                        <div style="color: red;" role="alert" *ngIf="editForm.controls.maHangHoa.errors?.required &&
+                         editForm.controls.maHangHoa.touched">Field is required</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Tên hàng hóa *</label>
+                        <input #nameInput="ngModel" class="form-control" type="text" name="tenHangHoa"
+                               [(ngModel)]="hanghoa.goodsName" required maxlength="64">
+                        <div style="color: red;" role="alert" *ngIf="editForm.controls.tenHangHoa.errors?.required &&
+                         editForm.controls.tenHangHoa.touched">Field is required</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Chủng loại *</label>
+                        <input #addressInput="ngModel" class="form-control" type="tel" name="chungLoai"
+                               [(ngModel)]="hanghoa.type" required maxlength="64">
+                        <div style="color: red;" role="alert" *ngIf="editForm.controls.chungLoai.errors?.required &&
+                         editForm.controls.chungLoai.touched">Field is required</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Đơn giá *</label>
+                        <input #addressInput="ngModel" class="form-control" type="text" name="donGia"
+                               [(ngModel)]="hanghoa.price" required maxlength="64">
+                        <div style="color: red;" role="alert" *ngIf="editForm.controls.donGia.errors?.required &&
+                         editForm.controls.donGia.touched">Field is required</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Nước sản xuất *</label>
+                        <input #addressInput="ngModel" class="form-control" type="text" name="nuocSanXuat"
+                               [(ngModel)]="hanghoa.countryOfManufacture" required maxlength="64">
+                        <div style="color: red;" role="alert" *ngIf="editForm.controls.nuocSanXuat.errors?.required &&
+                         editForm.controls.nuocSanXuat.touched">Field is required</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                            (click)="close()">
+                        {{l("Cancel")}}
+                    </button>
+                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                            [busyText]="l('SavingWithThreeDot')">
+                        <i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

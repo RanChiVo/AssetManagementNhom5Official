@@ -1,0 +1,76 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="software.id">Cập nhật phần mềm: {{software.cpuname}}</span>
+                        <span *ngIf="!software.id">Tạo mới phần mềm</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Tên máy tính *</label>
+                        <input #cpunameInput="ngModel" class="form-control" type="text" name="Name"
+                            [(ngModel)]="software.cpuname" required maxlength="64">
+                        <validation-messages [formCtrl]="cpunameInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Tên phần mềm *</label>
+                        <input #DisplaynameInput="ngModel" class="form-control" type="text" name="Address"
+                            [(ngModel)]="software.displayname" required maxlength="64">
+                        <validation-messages [formCtrl]="DisplaynameInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Phiên bản hiện tại *</label>
+                        <input #DisplayVersionInput="ngModel" class="form-control" type="text" name="Info"
+                            [(ngModel)]="software.displayVersion" required maxlength="64">
+                        <validation-messages [formCtrl]="DisplayVersionInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Nhà sản xuất *</label>
+                        <input #PublisherInput="ngModel" class="form-control" type="text" name="Info"
+                            [(ngModel)]="software.publisher" required maxlength="64">
+                        <validation-messages [formCtrl]="PublisherInput"></validation-messages>
+                    </div><div class="form-group">
+                        <label>Ngày cài đặt *</label>
+                        <input #InstalldateInput="ngModel" class="form-control" type="text" name="Info"
+                            [(ngModel)]="software.installdate" required maxlength="64">
+                        <validation-messages [formCtrl]="InstalldateInput"></validation-messages>
+                    </div><div class="form-group">
+                        <label>Thư mục cài đặt *</label>
+                        <input #InstallLocationInput="ngModel" class="form-control" type="text" name="Info"
+                            [(ngModel)]="software.installLocation" required maxlength="64">
+                        <validation-messages [formCtrl]="InstallLocationInput"></validation-messages>
+                    </div><div class="form-group">
+                        <label>Thư mục nguồn *</label>
+                        <input #InstallSourceInput="ngModel" class="form-control" type="text" name="Info"
+                            [(ngModel)]="software.installSource" required maxlength="64">
+                        <validation-messages [formCtrl]="InstallSourceInput"></validation-messages>
+                    </div><div class="form-group">
+                        <label>Thông tin phần mềm *</label>
+                        <input #URLInfoAboutInput="ngModel" class="form-control" type="text" name="Info"
+                            [(ngModel)]="software.urlInfoAbout" required maxlength="64">
+                        <validation-messages [formCtrl]="URLInfoAboutInput"></validation-messages>
+                    </div><div class="form-group">
+                        <label>Thông tin cập nhật *</label>
+                        <input #URLUpdateInfoInput="ngModel" class="form-control" type="text" name="Info"
+                            [(ngModel)]="software.urlUpdateInfo" required maxlength="64">
+                        <validation-messages [formCtrl]="URLUpdateInfoInput"></validation-messages>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

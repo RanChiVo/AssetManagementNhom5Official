@@ -1,0 +1,97 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #editForm="ngForm"  (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="congtrinh.id">Sửa chữa: {{congtrinh.tenCongTrinh}}</span>
+                        <span *ngIf="!congtrinh.id">Tạo mới Công trình</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                  
+                    
+                    <div class="form-group">
+                        <label>Mã Công trình *</label>
+                        <input #mactInput="ngModel" class="form-control" type="text" name="maCongTrinh"
+                               [(ngModel)]="congtrinh.maCongTrinh" required maxlength="64">
+                        <validation-messages [formCtrl]="mactInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Tên Công trình *</label>
+                        <input #tenctInput="ngModel" class="form-control" type="text" name="TenCongTrinh"
+                               [(ngModel)]="congtrinh.tenCongTrinh" required maxlength="64">
+                        <validation-messages [formCtrl]="tenctInput"></validation-messages>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Dự kiến xây dựng*</label>
+                        <input #dkxdInput="ngModel" class="form-control" type="date" name="duKienXayDung"
+                               [(ngModel)]="congtrinh.duKienXayDung" required maxlength="64">
+                        <validation-messages [formCtrl]="dkxdInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Dự kiến hoàn thành*</label>
+                        <input #dkhtInput="ngModel" class="form-control" type="date" name="duKienHoanThanh"
+                               [(ngModel)]="congtrinh.duKienHoanThanh" required maxlength="64">
+                        <validation-messages [formCtrl]="dkhtInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Thời gian thực hiện*</label>
+                        <input #ngaytcInput="ngModel" class="form-control" type="date" name="ngayThiCongThucTe"
+                               [(ngModel)]="congtrinh.ngayThiCongThucTe" required maxlength="64">
+                        <validation-messages [formCtrl]="ngaytcInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Kinh phí đề xuất*</label>
+                        <input #kpdxInput="ngModel" class="form-control" type="number" name="kinhPhiDeXuat"
+                               [(ngModel)]="congtrinh.kinhPhiDeXuat" required maxlength="64">
+                        <validation-messages [formCtrl]="kpdxInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Kinh phí trình*</label>
+                        <input #kptInput="ngModel" class="form-control" type="number" name="kinhPhiTrinh"
+                               [(ngModel)]="congtrinh.kinhPhiTrinh" required maxlength="64">
+                        <validation-messages [formCtrl]="kptInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Kinh phí được duyệt*</label>
+                        <input #kpddInput="ngModel" class="form-control" type="number" name="kinhPhiDuocDuyet"
+                               [(ngModel)]="congtrinh.kinhPhiDuocDuyet" required maxlength="64">
+                        <validation-messages [formCtrl]="kpddInput"></validation-messages>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Ghi chú*</label>
+                        <input #ghiChuInput="ngModel" class="form-control" type="text" name="ghiChu"
+                               [(ngModel)]="congtrinh.ghiChu" required >
+                        <validation-messages [formCtrl]="ghiChuInput"></validation-messages>
+                    </div>
+
+                    <!-- <div class="form-group">
+                        <label for="checkbox-inline">
+                        </label>
+                        <select id="isActive" name="isActive" [(ngModel)]="isActive" class="form-group"></select>
+                    </div> -->
+                </div>
+
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving" [disabled]="!editForm.form.valid"
+                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

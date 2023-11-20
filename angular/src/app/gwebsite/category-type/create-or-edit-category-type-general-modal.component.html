@@ -1,0 +1,55 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade category-modal" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: false}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="categoryType.id">{{l("ID")}}: {{categoryType.id}}</span>
+                        <span *ngIf="!categoryType.id">{{l("Create new type")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>{{l("Type Name")}} *</label>
+                        <input #typeNameInput="ngModel" class="form-control" type="text" name="typeName"
+                            [(ngModel)]="categoryType.name" required maxlength="64">
+                        <validation-messages [formCtrl]="typeNameInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>{{l("Prefix Word")}} *</label>
+                        <input #prefixwordInput="ngModel" class="form-control" type="text"
+                            name="typePrefixword" [(ngModel)]="categoryType.prefixWord" required
+                            maxlength="64">
+                        <validation-messages [formCtrl]="prefixwordInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>{{l("Description")}}</label>
+                        <input #typeDescriptionInput="ngModel" class="form-control" type="text"
+                            name="typeDescription" [(ngModel)]="categoryType.description">
+                        <validation-messages [formCtrl]="typeDescriptionInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>{{l("Status")}} {{categoryType.status}}</label>
+                        <select class="form-control" #statusInput name="typeStatus" [(ngModel)]="categoryType.status"
+                            title={{categoryType.status}}>
+                            <option value='Active'>Active</option>
+                            <option value='Inactive'>Inactive</option>
+                        </select>
+                        <validation-messages [formCtrl]="statusInput"></validation-messages>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="!editForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

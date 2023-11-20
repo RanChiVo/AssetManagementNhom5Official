@@ -1,0 +1,189 @@
+<div [@routerTransition]>
+
+    <div class="m-subheader">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto col-xs-6">
+                <h3 class="m-subheader__title m-subheader__title--separator">
+                    <span>{{l("Create New Asset")}}</span>
+                </h3>
+                <span class="m-section__sub">
+                    {{l("Input Asset Info")}}
+                </span>
+            </div>
+            <div class="col-xs-6 text-right">
+                <button class="btn btn-primary" [routerLink]="['/app/gwebsite/asset']">
+                    <i class="fa fa-list"></i> {{l("Back To Asset List")}}
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form #createForm="ngForm" role="form" novalidate (ngSubmit)="save()">
+                    <div class="m-form m-form--label-align-right " id="TextsFilterForm">
+                        <div class="row align-items-center m--margin-bottom-10 ">
+                            <div class="col-sm-12">
+                                <div class="input-group">
+                                    <div class="col-xl-6 m--margin-top-10 ">
+                                        <label>Ngày nhập *</label>
+                                        <input type="datetime" #dateAddedUtc name="dateAdded" [(ngModel)]="dateAdded" class="form-control">
+                                    </div>
+                                    <div class="col-xl-6 m--margin-top-10">
+                                        <label>Nhóm tài sản cha *</label>
+                                        <select #assetGroupCombobox name="FatherAssetGroup" class="form-control" [(ngModel)]="asset.assetGroupId" [attr.data-live-search]="true" jq-plugin="selectpicker" required>
+                                             <option value="">--Default--</option>
+                                             <option *ngFor="let item of assetGroups" [value]="item.value">{{item.displayText}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xl-6 m--margin-top-10">
+                                        <label>Loại tài sản *</label>
+                                        <select #assetTypeCombobox name="AssetTypeId" class="form-control" [(ngModel)]="asset.assetTypeId" [attr.data-live-search]="true" jq-plugin="selectpicker" required>
+                                             <option *ngFor="let item of assetTypes" [value]="item.value">{{item.displayText}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xl-6 m--margin-top-10">
+                                        <label>Nhà cung cấp *</label>
+                                        <select #supplierCombobox name="Supplier" class="form-control" [(ngModel)]="asset.supplier" [attr.data-live-search]="true" jq-plugin="selectpicker" required>
+                                             <option *ngFor="let item of suppliers" [value]="item.value">{{item.displayText}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xl-6 m--margin-top-10">
+                                        <label>Số tháng khấu hao *</label>
+                                        <input #totalMonthDepreciationInput="ngModel" class="form-control" type="text" name="Name" [(ngModel)]="asset.totalMonthDepreciation" required maxlength="64" [readonly]="isReadOnly">
+                                        <validation-messages [formCtrl]="totalMonthDepreciationInput"></validation-messages>
+                                    </div>
+                                    <div class="col-xl-6 m--margin-top-10">
+                                        <label>Tỷ lệ khấu hao *</label>
+                                        <input #depreciationRateInput="ngModel" class="form-control" type="text" name="DepreciationRate" [(ngModel)]="asset.depreciationRate" required maxlength="64" [readonly]="isReadOnly">
+                                        <validation-messages [formCtrl]="depreciationRateInput"></validation-messages>
+                                    </div>
+                                    <div class="col-xl-6 m--margin-top-10">
+                                        <label>Tên tài sản *</label>
+                                        <input #nameInput="ngModel" class="form-control" type="text" name="Name" [(ngModel)]="asset.name" required maxlength="64" [readonly]="isReadOnly">
+                                        <validation-messages [formCtrl]="nameInput"></validation-messages>
+                                    </div>
+                                    <div class="col-xl-6 m--margin-top-10">
+                                        <label>Số PO *</label>
+                                        <input #PONumberInput="ngModel" class="form-control" type="text" name="PurchaseOderId" [(ngModel)]="asset.purchaseOderId" required maxlength="64" [readonly]="isReadOnly">
+                                        <validation-messages [formCtrl]="PONumberInput"></validation-messages>
+                                    </div>
+                                    <div class="col-xl-6 m--margin-top-10">
+                                        <label>Thông tin mô tả*</label>
+                                        <input #descriptionInput="ngModel" class="form-control" type="text" name="Description" [(ngModel)]="asset.description" required maxlength="64" [readonly]="isReadOnly">
+                                        <validation-messages [formCtrl]="descriptionInput"></validation-messages>
+                                    </div>
+                                    <div class="col-xl-6 m--margin-top-10">
+                                        <label>Trạng thái*</label><br>
+                                        <mat-slide-toggle #isActiveInput="ngModel" color="primary" [(ngModel)]="asset.isActive" name="IsActive">
+                                            <span *ngIf="asset.isActive">{{l("Đã duyệt")}}</span>
+                                            <span *ngIf="!asset.isActive">{{l("Chưa cuyệt")}}</span>
+                                        </mat-slide-toggle>
+                                        <validation-messages [formCtrl]="isActiveInput"></validation-messages>
+                                    </div>
+                                    <div class="col-xl-6 m--margin-top-10">
+                                        <label>Số lượng*</label>
+                                        <input #quantityInput="ngModel" class="form-control" type="text" name="Quantity" [(ngModel)]="asset.quantity" required maxlength="64" [readonly]="isReadOnly">
+                                        <validation-messages [formCtrl]="quantityInput"></validation-messages>
+                                    </div>
+                                    <div class="col-xl-6 m--margin-top-10">
+                                        <label>Nguyên giá tài sản*</label>
+                                        <input #originalPriceInput="ngModel" class="form-control" type="text" name="OriginalPrice" [(ngModel)]="asset.originalPrice" required maxlength="64" [readonly]="isReadOnly">
+                                        <validation-messages [formCtrl]="originalPriceInput"></validation-messages>
+                                    </div>
+                                    <div class="col-xl-6 m--margin-top-10">
+                                        <label>Giá trị khấu hao*</label>
+                                        <input #depreciationValueInput="ngModel" class="form-control" type="text" name="DepreciationValue" [(ngModel)]="asset.depreciationValue" required maxlength="64" [readonly]="isReadOnly">
+                                        <validation-messages [formCtrl]="depreciationValueInput"></validation-messages>
+                                    </div>
+                                    <div class="col-xl-6 m--margin-top-10">
+                                        <label>Ghi chú*</label>
+                                        <input #noteInput="ngModel" class="form-control" type="text" name="Note" [(ngModel)]="asset.note" required maxlength="64" [readonly]="isReadOnly">
+                                        <validation-messages [formCtrl]="noteInput"></validation-messages>
+                                    </div>
+                                    <div class="col-xl-6 m--margin-top-10">
+                                        <label>Ảnh</label>
+                                        <img [src]="imageURL" height="200" width="200" position="center" *ngIf="imageURL">
+                                        <input #file type="file" accept='image/*' (change)="chooseImage(file.files)">
+                                    </div>
+
+                                    <div class="col-xl-6 m--margin-top-40-desktop m--margin-top-20-tablet-and-mobile" align="right">
+                                        <button [disabled]="saving" type="button" class="btn btn-default" [routerLink]="['/app/gwebsite/asset']">{{l("Cancel")}}</button>
+                                        <button type="submit" class="btn btn-primary" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
+                                            <i class="fa fa-save"></i>
+                                            <span>{{l("Save")}}</span>
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTable (onLazyLoad)="getWarrantys($event)" [value]="primengTableHelper.records" rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true" [responsive]="primengTableHelper.isResponsive">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th pSortableColumn="id">
+                                            Mã bảo hành
+                                            <p-sortIcon field="name"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="assetId">
+                                            Mã tài sản
+                                            <p-sortIcon field="name"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="warrantyperiod">
+                                            Thời gian bảo hành
+                                            <p-sortIcon field="name"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="warrantyDate">
+                                            Ngày bảo hành
+                                        </th>
+                                        <th pSortableColumn="interpretationContent">
+                                            Nội dung bảo hành
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit ">
+                                    <tr>
+                                        <td>
+                                            <span class="ui-column-title">Mã bảo hành</span>
+                                            <span title="{{record.id}}">{{truncateString(record.id)}}</span>
+                                        </td>
+                                        <td>
+                                            <span class="ui-column-title">Mã tài sản</span>
+                                            <span title="{{record.assetId}}">{{truncateString(record.assetId)}}</span>
+                                        </td>
+                                        <td>
+                                            <span class="ui-column-title">Thời gian bảo hành</span>
+                                            <span title="{{record.warrantyperiod}}">{{truncateString(record.warrantyperiod)}}</span>
+                                        </td>
+                                        <td>
+                                            <span class="ui-column-title">Ngày bảo hành</span>
+                                            <span title="{{record.warrantyDate}}">{{truncateString(record.warrantyperiod)}}</span>
+                                        </td>
+                                        <td>
+                                            <span class="ui-column-title">Nội dung bảo hành</span>
+                                            <span title="{{record.interpretationContent}}">{{truncateString(record.interpretationContent)}}</span>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="primeng-no-data " *ngIf="primengTableHelper.totalRecordsCount==0 ">
+                                {{l('NoData')}}
+                            </div>
+                            <div class="primeng-paging-container ">
+                                <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}} " #paginator (onPageChange)="getWarrantys($event) " [totalRecords]="primengTableHelper.totalRecordsCount " [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage ">
+                                </p-paginator>
+                                <span class="total-records-count ">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

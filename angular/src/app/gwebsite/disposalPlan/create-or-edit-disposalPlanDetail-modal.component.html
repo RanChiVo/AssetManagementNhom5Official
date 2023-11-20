@@ -1,0 +1,81 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Mã Kế Hoạch *</label>
+                        <input #kinhPhiInput="ngModel" class="form-control" type="text" name="maKeHoach"
+                               [(ngModel)]="disposalPlanDetail.maKeHoach" required maxlength="64">
+                        <validation-messages [formCtrl]="maKeHoachInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Mã Tài Sản *</label>
+                        <input #maSPInput="ngModel" class="form-control" type="text" name="maTS"
+                               [(ngModel)]="disposalPlanDetail.maTS" required maxlength="64">
+                        <validation-messages [formCtrl]="maTSInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Tên Tài Sản *</label>
+                        <input #phongBanInput="ngModel" class="form-control" type="text" name="tenTS"
+                               [(ngModel)]="disposalPlanDetail.tenTS" required maxlength="64">
+                        <validation-messages [formCtrl]="tenTSInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Nguyên Giá *</label>
+                        <input #namInput="ngModel" class="form-control" type="text" name="nguyenGia"
+                               [(ngModel)]="disposalPlanDetail.nguyenGia" required maxlength="64">
+                        <validation-messages [formCtrl]="nguyenGiaInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Giá Trị Còn Lại*</label>
+                        <input #namInput="ngModel" class="form-control" type="text" name="giaTriConLai"
+                               [(ngModel)]="disposalPlanDetail.giaTriConLai" required maxlength="64">
+                        <validation-messages [formCtrl]="giaTriConLaiInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Giá Dự Kiến Thu Hồi*</label>
+                        <input #namInput="ngModel" class="form-control" type="text" name="giaDuKien"
+                               [(ngModel)]="disposalPlanDetail.giaDuKien" required maxlength="64">
+                        <validation-messages [formCtrl]="giaDuKienInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Tình Trạng Tài Sản *</label>
+                        <input #namInput="ngModel" class="form-control" type="number" name="tinhTrangTS"
+                               [(ngModel)]="disposalPlanDetail.tinhTrangTS" required maxlength="64">
+                        <validation-messages [formCtrl]="tinhTrangTSInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Hình Thức *</label>
+                        <input #namInput="ngModel" class="form-control" type="number" name="hinhThuc"
+                               [(ngModel)]="disposalPlanDetail.hinhThuc" required maxlength="64">
+                        <validation-messages [formCtrl]="hinhThucInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Tháng Dự Kiến Thanh Lý *</label>
+                        <input #namInput="ngModel" class="form-control" type="number" name="thangDuKien"
+                               [(ngModel)]="disposalPlanDetail.thangDuKien" required maxlength="64">
+                        <validation-messages [formCtrl]="thangDuKienInput"></validation-messages>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                            (click)="close()">
+                        {{l("Cancel")}}
+                    </button>
+                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                            [busyText]="l('SavingWithThreeDot')">
+                        <i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

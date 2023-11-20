@@ -1,0 +1,119 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{ backdrop: 'static' }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="vehicle.id">Cập nhật xe: {{ vehicle.name }}</span>
+                        <span *ngIf="!vehicle.id">Tạo mới xe</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <button (click)="showTaiSan()" class="btn btn-primary" type="button">
+                            <i class="icon-refresh"></i>
+                            {{ l("Mo TS") }}
+                        </button>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Mã tài sản *</label>
+                        <input #matsInput="ngModel" class="form-control" type="text" name="maTaiSan"
+                            [(ngModel)]="taisan.maTaiSan" required disabled maxlength="64" />
+                        <validation-messages [formCtrl]="matsInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Tên tài sản *</label>
+                        <input #tentsInput="ngModel" class="form-control" type="text" name="tenTaiSan"
+                            [(ngModel)]="taisan.tenTaiSan" required disabled maxlength="64" />
+                        <validation-messages [formCtrl]="tentsInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tên xe *</label>
+                        <input #nameInput="ngModel" class="form-control" type="text" name="Name"
+                            [(ngModel)]="vehicle.name" required maxlength="64" />
+                        <validation-messages [formCtrl]="nameInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Số xe *</label>
+                        <input #numberInput="ngModel" class="form-control" type="text" name="Number"
+                            [(ngModel)]="vehicle.number" required maxlength="64" />
+                        <validation-messages [formCtrl]="numberInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Loại xe*</label>
+                        <select #TypeVehicleCombobox name="TypeVehicle" class="form-control" [(ngModel)]="selectedType"
+                            title="Select type..." (change)="this.onChangeType()" required>
+                            <option *ngFor="let item of typevehicles" [value]="item.id">{{ item.nameTypeCar }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Số Km Đã đi *</label>
+                        <input #sokmInput="ngModel" class="form-control" type="number" name="soKmDaDi"
+                            [(ngModel)]="vehicle.soKmDaDi" required maxlength="64" />
+                        <validation-messages [formCtrl]="sokmInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Định mực nhiên liệu *</label>
+                        <input #dinhmucInput="ngModel" class="form-control" type="number" name="dinhMucNhienLieu"
+                            [(ngModel)]="vehicle.dinhMucNhienLieu" required maxlength="64" />
+                        <validation-messages [formCtrl]="dinhmucInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Trạng thái *</label>
+                        <input #statusInput="ngModel" class="form-control" type="text" name="Status"
+                            [(ngModel)]="vehicle.status" required maxlength="64" />
+                        <validation-messages [formCtrl]="statusInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Model*</label>
+                        <select #TypeVehicleCombobox name="ModelVehicle" class="form-control"
+                            [(ngModel)]="selectedModel" title="Select model..." (change)="this.onChangeModel()"
+                            required>
+                            <option *ngFor="let item of modelvehicles" [value]="item.id">{{ item.nameModel }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Số máy *</label>
+                        <input #machineNumberInput="ngModel" class="form-control" type="text" name="MachineNumber"
+                            [(ngModel)]="vehicle.machineNumber" required maxlength="64" />
+                        <validation-messages [formCtrl]="machineNumberInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Màu *</label>
+                        <input #colorInput="ngModel" class="form-control" type="text" name="Color"
+                            [(ngModel)]="vehicle.color" required maxlength="64" />
+                        <validation-messages [formCtrl]="colorInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Tên chủ sở hữu *</label>
+                        <input #hostNameInput="ngModel" class="form-control" type="text" name="HostName"
+                            [(ngModel)]="vehicle.hostName" required maxlength="64" />
+                        <validation-messages [formCtrl]="hostNameInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Tên động cơ *</label>
+                        <input #nameEngineInput="ngModel" class="form-control" type="text" name="NameEngine"
+                            [(ngModel)]="vehicle.nameEngine" required maxlength="64" />
+                        <validation-messages [formCtrl]="nameEngineInput"></validation-messages>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">
+                        {{ l("Cancel") }}
+                    </button>
+                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')">
+                        <i class="fa fa-save"></i> <span>{{ l("Save") }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <selectAsset_8Modal #selectAsset_8Modal (modalSave)="updateAsset()"></selectAsset_8Modal>
+</div>

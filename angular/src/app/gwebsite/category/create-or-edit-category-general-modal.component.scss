@@ -1,0 +1,50 @@
+$desktop-width: 990px;
+$mobile-width: 512px;
+
+// override bootstrap fade in/out animation
+.modal-dialog {
+    .modal.fade & {
+      transform: none;
+    }
+    .modal.show & {
+      transform: none;
+    }
+}
+
+
+.category-modal {
+    transform: translate(100vw, 0);
+    overflow: hidden; // remove scrollbar
+    transition: all 0.35s ease-out;
+    z-index: 97;
+
+    &.in {
+        transform: translate(0, 0);
+    }
+
+    .modal-dialog {
+        margin: 0;
+
+        .modal-content {
+            height: 100vh;
+            width: 100vw;
+            border-radius: 0;
+            // display: flex;
+            justify-content: center;
+            // padding-top: 60px;
+
+            @media (min-width: $mobile-width) {
+                form {
+                    padding: 0;
+                }
+            }
+
+            @media (min-width: $desktop-width) {
+                form {
+                    padding: 0 16rem;
+                    padding-left: 255px + 160px;
+                }
+            }
+        }
+    }
+}

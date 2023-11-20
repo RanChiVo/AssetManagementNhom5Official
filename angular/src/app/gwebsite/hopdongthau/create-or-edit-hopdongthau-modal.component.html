@@ -1,0 +1,628 @@
+<div [@routerTransition]>
+    <div class="m-subheader ">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto col-xs-6">
+                <h3 class="m-subheader__title m-subheader__title--separator">
+                    <span>{{l("Hợp đồng thầu")}}</span>
+                </h3>
+                <span *ngIf="hopdongthau.id" class="m-section__sub">{{l("Cập nhật hợp đồng")}}</span>
+                <span *ngIf="!hopdongthau.id" class="m-section__sub">{{l("Tạo hợp đồng")}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container">
+                        <form ngNativeValidate #editForm="ngForm" (ngSubmit)="save()">
+                            <div class="modal-header">
+                                <h4 class="modal-title">
+                                    <span *ngIf="hopdongthau.id">Cập nhật hợp đồng thầu: {{hopdongthau.contractCode}}</span>
+                                    <span *ngIf="!hopdongthau.id">Tạo mới hợp đồng thầu</span>
+                                </h4>
+                            </div>
+                            <div class="modal-body row">
+                                <div class="form-group col-sm-4">
+                                    <label>Mã hợp đồng *</label>
+                                    <input #addressInput="ngModel" class="form-control" type="text" name="maHopDong"
+                                           [(ngModel)]="hopdongthau.contractCode" required maxlength="64">
+                                    <div style="color: red;" role="alert" *ngIf="editForm.controls.maHopDong.errors?.required &&
+                         editForm.controls.maHopDong.touched">Field is required</div>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label>Tên hợp đồng *</label>
+                                    <input #addressInput="ngModel" class="form-control" type="text" name="tenHopDong"
+                                           [(ngModel)]="hopdongthau.contractName" required maxlength="64">
+                                    <div style="color: red;" role="alert" *ngIf="editForm.controls.tenHopDong.errors?.required &&
+                         editForm.controls.tenHopDong.touched">Field is required</div>
+                                </div>
+
+                                <div class="form-group col-sm-4" *ngIf="!hopdongthau.id">
+                                    <label>Trạng thái duyệt *</label>
+                                    <select #trangthaiduyetCombobox name="trangThaiDuyet" class="form-control" [(ngModel)]="hopdongthau.approvalStatus"
+                                            [attr.data-live-search]="true" jq-plugin="selectpicker" required>
+                                        <option [value]="">Đang chờ</option>
+                                        <option [value]="">Đã duyệt</option>
+                                        <option [value]="">Đã hủy</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-sm-4" *ngIf="hopdongthau.id" [ngSwitch]="hopdongthau.approvalStatus">
+                                    <div class="form-group" style="width: 100%;" *ngSwitchCase="'Đang chờ'">
+                                        <label>Trạng thái duyệt *</label>
+                                        <select #trangthaiduyetCombobox name="trangThaiDuyet" class="form-control" [(ngModel)]="hopdongthau.approvalStatus"
+                                                [attr.data-live-search]="true" jq-plugin="selectpicker" required>
+                                            <option selected [value]="">Đang chờ</option>
+                                            <option [value]="">Đã duyệt</option>
+                                            <option [value]="">Đã hủy</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group" style="width: 100%;" *ngSwitchCase="'Đã duyệt'">
+                                        <label>Trạng thái duyệt *</label>
+                                        <select #trangthaiduyetCombobox name="trangThaiDuyet" class="form-control" [(ngModel)]="hopdongthau.approvalStatus"
+                                                [attr.data-live-search]="true" jq-plugin="selectpicker" required>
+                                            <option [value]="">Đang chờ</option>
+                                            <option selected [value]="">Đã duyệt</option>
+                                            <option [value]="">Đã hủy</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group" style="width: 100%;" *ngSwitchCase="'Đã hủy'">
+                                        <label>Trạng thái duyệt *</label>
+                                        <select #trangthaiduyetCombobox name="trangThaiDuyet" class="form-control" [(ngModel)]="hopdongthau.approvalStatus"
+                                                [attr.data-live-search]="true" jq-plugin="selectpicker" required>
+                                            <option [value]="">Đang chờ</option>
+                                            <option [value]="">Đã duyệt</option>
+                                            <option selected [value]="">Đã hủy</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-sm-4">
+                                    <label>Mã gói thầu *</label>
+                                    <p class="input-group">
+                                        <input #addressInput="ngModel" class="form-control" type="text" name="maHoSo"
+                                               [(ngModel)]="hopdongthau.bidCode" required maxlength="64">
+                                        <span class="input-group-append">
+                                            <button type="button" class="btn btn-info input-group-text" data-toggle="modal" data-target="#myModal"><span class="fa fa-folder-open"></span></button>
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label>Mã DV trúng thầu *</label>
+                                    <input #addressInput="ngModel" class="form-control" type="text" name="maDonViTrungThau"
+                                           [(ngModel)]="hopdongthau.unitAcceptedCode" required maxlength="64">
+                                </div>
+
+                                <div class="modal fade" id="myModal" role="dialog">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <div class="form-group col-sm-11" style="margin-left: 3%;">
+                                                    <ngForm #duanForm="ngForm" autocomplete="off">
+                                                        <div class="m-form m-form--label-align-right" id="TextsFilterForm">
+                                                            <div class="row align-items-center m--margin-bottom-10">
+                                                                <div class="col-sm-12">
+                                                                    <div class="input-group">
+                                                                        <input [(ngModel)]="hosothauName" name="hosothauName" autoFocus class="form-control"
+                                                                               placeholder="Nhập tên gói thầu" type="text">
+                                                                        <span class="input-group-btn">
+                                                                            <button (click)="applyFilters()" class="btn btn-primary" type="button">
+                                                                                <i class="icon-refresh"></i>
+                                                                                {{l("Refresh")}}
+                                                                            </button>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </ngForm>
+
+                                                    <div class="row align-items-center">
+                                                        <!--<Primeng-TurboTable-Start>-->
+                                                        <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                                                            <p-table #dataTable (onLazyLoad)="getHoSoThaus($event)" [value]="primengTableHelper.records"
+                                                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                                                                     [responsive]="primengTableHelper.isResponsive">
+                                                                <ng-template pTemplate="header">
+                                                                    <tr>
+                                                                        <th pSortableColumn="name">
+                                                                            Mã gói thầu
+                                                                            <p-sortIcon field="name"></p-sortIcon>
+                                                                        </th>
+                                                                        <th pSortableColumn="address">
+                                                                            Đơn vị thầu
+                                                                        </th>
+                                                                        <th pSortableColumn="info">
+                                                                            Hình thức thầu
+                                                                            <p-sortIcon field="info"></p-sortIcon>
+                                                                        </th>
+                                                                        <th pSortableColumn="info">
+                                                                            Action
+                                                                            <p-sortIcon field="info"></p-sortIcon>
+                                                                        </th>
+                                                                    </tr>
+                                                                </ng-template>
+                                                                <ng-template pTemplate="body" let-record="$implicit">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <span class="ui-column-title">Mã gói thầu</span>
+                                                                            <span title="{{record.bidCode}}">{{truncateString(record.bidCode)}}</span>
+                                                                        </td>
+                                                                        <td>
+                                                                            <span class="ui-column-title">Đơn vị thầu</span>
+                                                                            <span title="{{record.bidUnit}}">{{truncateString(record.bidUnit)}}</span>
+                                                                        </td>
+                                                                        <td>
+                                                                            <span class="ui-column-title">Hình thức thầu</span>
+                                                                            <span title="{{record.bidFormality}}">{{truncateString(record.bidFormality)}}</span>
+                                                                        </td>
+                                                                        <td>
+                                                                            <button type="button" class="bg-success" *ngIf="record.bidCode" (click)="onSelect(record.bidCode, record.bidUnit)" style="border-radius: 5px 5px; cursor:pointer;"><span class="fa fa-plus"></span></button>
+                                                                        </td>
+                                                                    </tr>
+                                                                </ng-template>
+                                                            </p-table>
+                                                            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                                                {{l('NoData')}}
+                                                            </div>
+                                                            <div class="primeng-paging-container">
+                                                                <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}" #paginator
+                                                                             (onPageChange)="getHoSoThaus($event)"
+                                                                             [totalRecords]="primengTableHelper.totalRecordsCount"
+                                                                             [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                                                </p-paginator>
+                                                                <span class="total-records-count">
+                                                                    {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <!--<Primeng-TurboTable-End>-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="hopdongthau.id" class="form-group col-sm-4">
+                                    <label>Tài sản *</label>
+                                    <p class="input-group">
+                                        <input #addressInput="ngModel" class="form-control" type="text" name="tenHangHoa"
+                                               [(ngModel)]="hopdongthau.goodsName" required maxlength="64">
+                                        <span class="input-group-append">
+                                            <button type="button" class="btn btn-info input-group-text" data-toggle="modal" data-target="#myModalHangHoa"><span class="fa fa-folder-open"></span></button>
+                                        </span>
+                                    </p>
+                                </div>
+
+                                <div class="form-group col-sm-4">
+                                    <label>Ngày tạo hợp đồng *</label>
+                                    <input #addressInput="ngModel" class="form-control" type="date" name="ngayTaoHopDong"
+                                           [(ngModel)]="hopdongthau.contractDayCreate" required maxlength="64">
+                                    <div style="color: red;" role="alert" *ngIf="editForm.controls.ngayTaoHopDong.errors?.required &&
+                         editForm.controls.ngayTaoHopDong.touched">Field is required</div>
+                                </div>
+
+
+                                <div class="form-group col-sm-12">
+                                    <label>Ghi chú *</label>
+                                    <input #addressInput="ngModel" class="form-control" type="text" name="ghiChu"
+                                           [(ngModel)]="hopdongthau.content" required maxlength="64" style="height: 130px;">
+                                    <div style="color: red;" role="alert" *ngIf="editForm.controls.ghiChu.errors?.required &&
+                         editForm.controls.ghiChu.touched">Field is required</div>
+                                </div>
+
+                                <h5 class="col-sm-12" style="margin-top: 14px;">Bảo lãnh hợp đồng *</h5>
+                                <div class="form-group col-sm-4">
+                                    <label>Hình thức *</label>
+                                    <input #addressInput="ngModel" class="form-control" type="text" name="hinhThuc"
+                                           [(ngModel)]="hopdongthau.contractForm" required maxlength="64">
+                                    <div style="color: red;" role="alert" *ngIf="editForm.controls.hinhThuc.errors?.required &&
+                    editForm.controls.hinhThuc.touched">Field is required</div>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label>Số chứng từ bảo lãnh *</label>
+                                    <input #addressInput="ngModel" class="form-control" type="text" name="soChungTuBaoLanh"
+                                           [(ngModel)]="hopdongthau.contractConfirmNumber" required maxlength="64">
+                                    <div style="color: red;" role="alert" *ngIf="editForm.controls.soChungTuBaoLanh.errors?.required &&
+                    editForm.controls.soChungTuBaoLanh.touched">Field is required</div>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label>Ngày hết hạn chứng từ *</label>
+                                    <input #addressInput="ngModel" class="form-control" type="date" name="ngayHetHanChungTu"
+                                           [(ngModel)]="hopdongthau.contractExpire" required maxlength="64">
+                                    <div style="color: red;" role="alert" *ngIf="editForm.controls.ngayHetHanChungTu.errors?.required &&
+                    editForm.controls.ngayHetHanChungTu.touched">Field is required</div>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label>Tỉ lệ *</label>
+                                    <input #addressInput="ngModel" class="form-control" type="text" name="tiLe"
+                                           [(ngModel)]="hopdongthau.contractRatio" required maxlength="64">
+                                    <div style="color: red;" role="alert" *ngIf="editForm.controls.tiLe.errors?.required &&
+                    editForm.controls.tiLe.touched">Field is required</div>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label>Số tiền *</label>
+                                    <input #addressInput="ngModel" class="form-control" type="text" name="soTien"
+                                           [(ngModel)]="hopdongthau.contractPrice" required maxlength="64">
+                                    <div style="color: red;" role="alert" *ngIf="editForm.controls.soTien.errors?.required &&
+                    editForm.controls.soTien.touched">Field is required</div>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label>Ngân hàng bảo lãnh *</label>
+                                    <input #addressInput="ngModel" class="form-control" type="text" name="nganHangBaoLanh"
+                                           [(ngModel)]="hopdongthau.contractBank" required maxlength="64">
+                                    <div style="color: red;" role="alert" *ngIf="editForm.controls.nganHangBaoLanh.errors?.required &&
+                    editForm.controls.nganHangBaoLanh.touched">Field is required</div>
+                                </div>
+
+                                <h5 class="col-sm-12" style="margin-top: 14px;">Bảo lãnh bảo hành *</h5>
+                                <div class="form-group col-sm-4">
+                                    <label>Hình thức *</label>
+                                    <input #addressInput="ngModel" class="form-control" type="text" name="hinhThucBH"
+                                           [(ngModel)]="hopdongthau.guaranteeForm" required maxlength="64">
+                                    <div style="color: red;" role="alert" *ngIf="editForm.controls.hinhThucBH.errors?.required &&
+                    editForm.controls.hinhThucBH.touched">Field is required</div>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label>Số chứng từ bảo lãnh *</label>
+                                    <input #addressInput="ngModel" class="form-control" type="text" name="soChungTuBaoLanhBH"
+                                           [(ngModel)]="hopdongthau.guaranteeConfirmNumber" required maxlength="64">
+                                    <div style="color: red;" role="alert" *ngIf="editForm.controls.soChungTuBaoLanhBH.errors?.required &&
+                    editForm.controls.soChungTuBaoLanhBH.touched">Field is required</div>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label>Ngày hết hạn chứng từ *</label>
+                                    <input #addressInput="ngModel" class="form-control" type="date" name="ngayHetHanChungTuBH"
+                                           [(ngModel)]="hopdongthau.guaranteeExpire" required maxlength="64">
+                                    <div style="color: red;" role="alert" *ngIf="editForm.controls.ngayHetHanChungTuBH.errors?.required &&
+                    editForm.controls.ngayHetHanChungTuBH.touched">Field is required</div>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label>Tỉ lệ *</label>
+                                    <input #addressInput="ngModel" class="form-control" type="text" name="tiLeBH"
+                                           [(ngModel)]="hopdongthau.guaranteeRatio" required maxlength="64">
+                                    <div style="color: red;" role="alert" *ngIf="editForm.controls.tiLeBH.errors?.required &&
+                    editForm.controls.tiLeBH.touched">Field is required</div>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label>Số tiền *</label>
+                                    <input #addressInput="ngModel" class="form-control" type="text" name="soTienBH"
+                                           [(ngModel)]="hopdongthau.guaranteePrice" required maxlength="64">
+                                    <div style="color: red;" role="alert" *ngIf="editForm.controls.soTienBH.errors?.required &&
+                    editForm.controls.soTienBH.touched">Field is required</div>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label>Ngân hàng bảo lãnh *</label>
+                                    <input #addressInput="ngModel" class="form-control" type="text" name="nganHangBaoLanhBH"
+                                           [(ngModel)]="hopdongthau.guaranteeBank" required maxlength="64">
+                                    <div style="color: red;" role="alert" *ngIf="editForm.controls.nganHangBaoLanhBH.errors?.required &&
+                    editForm.controls.nganHangBaoLanhBH.touched">Field is required</div>
+                                </div>
+
+
+                                <div class="form-group col-sm-8">
+                                </div>
+
+                                <div class="modal fade" id="myModalHangHoa" role="dialog">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <div class="form-group col-sm-11" style="margin-left: 3%;">
+                                                    <ngForm #duanForm="ngForm" autocomplete="off">
+                                                        <div class="m-form m-form--label-align-right" id="TextsFilterForm">
+                                                            <div class="row align-items-center m--margin-bottom-10">
+                                                                <div class="col-sm-12">
+                                                                    <div class="input-group">
+                                                                        <input [(ngModel)]="hanghoaName" name="hanghoaName" autoFocus class="form-control"
+                                                                               placeholder="Nhập tên hàng hóa" type="text">
+                                                                        <span class="input-group-btn">
+                                                                            <button (click)="applyFiltersHangHoa()" class="btn btn-primary" type="button">
+                                                                                <i class="icon-refresh"></i>
+                                                                                {{l("Refresh")}}
+                                                                            </button>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </ngForm>
+
+                                                    <div class="row align-items-center">
+                                                        <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                                                            <p-table #dataTable (onLazyLoad)="getHangHoas($event)" [value]="primengTableHelper.records"
+                                                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                                                                     [responsive]="primengTableHelper.isResponsive">
+                                                                <ng-template pTemplate="header">
+                                                                    <tr>
+                                                                        <th pSortableColumn="name">
+                                                                            Mã hàng hóa
+                                                                            <p-sortIcon field="name"></p-sortIcon>
+                                                                        </th>
+                                                                        <th pSortableColumn="address">
+                                                                            Tên hàng hóa
+                                                                        </th>
+                                                                        <th pSortableColumn="info">
+                                                                            Chủng loại
+                                                                            <p-sortIcon field="info"></p-sortIcon>
+                                                                        </th>
+                                                                        <th pSortableColumn="info">
+                                                                            Đơn giá
+                                                                            <p-sortIcon field="info"></p-sortIcon>
+                                                                        </th>
+                                                                        <th pSortableColumn="info">
+                                                                            Action
+                                                                            <p-sortIcon field="info"></p-sortIcon>
+                                                                        </th>
+                                                                    </tr>
+                                                                </ng-template>
+                                                                <ng-template pTemplate="body" let-record="$implicit">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <span class="ui-column-title">Mã hàng hóa</span>
+                                                                            <span title="{{record.goodsCode}}">{{truncateString(record.goodsCode)}}</span>
+                                                                        </td>
+                                                                        <td>
+                                                                            <span class="ui-column-title">Tên hàng hóa</span>
+                                                                            <span title="{{record.goodsName}}">{{truncateString(record.goodsName)}}</span>
+                                                                        </td>
+                                                                        <td>
+                                                                            <span class="ui-column-title">Chủng loại</span>
+                                                                            <span title="{{record.type}}">{{truncateString(record.type)}}</span>
+                                                                        </td>
+                                                                        <td>
+                                                                            <span class="ui-column-title">Đơn giá</span>
+                                                                            <span title="{{record.price}}">{{truncateString(record.price)}}</span>
+                                                                        </td>
+                                                                        <td>
+                                                                            <button type="button" class="bg-success" *ngIf="record.goodsCode" (click)="onSelectHangHoa(record)" style="border-radius: 5px 5px; cursor:pointer;"><span class="fa fa-plus"></span></button>
+                                                                        </td>
+                                                                    </tr>
+                                                                </ng-template>
+                                                            </p-table>
+                                                            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                                                {{l('NoData')}}
+                                                            </div>
+                                                            <div class="primeng-paging-container">
+                                                                <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}" #paginator
+                                                                             (onPageChange)="getHangHoas($event)"
+                                                                             [totalRecords]="primengTableHelper.totalRecordsCount"
+                                                                             [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                                                </p-paginator>
+                                                                <span class="total-records-count">
+                                                                    {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="hopdongthau.id" class="form-group col-sm-12">
+                                    <h6>Danh mục tài sản</h6>
+                                </div>
+                                <div *ngIf="hopdongthau.id" class="form-group col-sm-11" style="margin-left: 3%;">
+                                    <div class="row align-items-center">
+                                        <table class="table table-striped table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Chọn</th>
+                                                    <th>Mã hàng hóa</th>
+                                                    <th>Tên hàng hóa</th>
+                                                    <th>Chủng loại</th>
+                                                    <th>Đơn giá</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let listhanghoa of listHangHoa">
+                                                    <td class="text-center">
+                                                        <input type="checkbox" name="radioHangHoa" [disabled]="listhanghoa.disable" [value]="listhanghoa.id" (change)="setSelectedHangHoa(listhanghoa.name, listhanghoa.hanghoa_id, listhanghoa.type, listhanghoa.price, listhanghoa.hanghoa_NCC); listhanghoa.disable=true" />
+                                                    </td>
+                                                    <td>{{listhanghoa.id}}</td>
+                                                    <td>{{listhanghoa.name}}</td>
+                                                    <td>{{listhanghoa.type}}</td>
+                                                    <td>{{listhanghoa.price}}</td>
+                                                    <td>
+                                                        <button type="button" class="bg-danger" (click)="removeFromListHangHoa(listhanghoa.id)" style="border-radius: 5px 5px; cursor:pointer;"><span class="fa fa-trash"></span></button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div style="margin-left: 45%; font-size: 15px; color: red;" *ngIf="listHangHoa.length == 0" class="text-center">
+                                            {{l('NoData')}}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="hopdongthau.id" class="form-group col-sm-12">
+                                    <h6>Chi tiết thanh toán</h6>
+                                </div>
+                                <div *ngIf="hopdongthau.id" class="modal fade" id="myModalPayment" role="dialog">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <div class="form-group col-sm-11" style="margin-left: 3%;">
+                                                    <div class="row align-items-center">
+                                                        <div class="primeng-datatable-container">
+                                                            <form ngNativeValidate #paymentForm="ngForm" (ngSubmit)="savePayment()">
+                                                                <div class="modal-header">
+                                                                    <h4 class="modal-title">
+                                                                        <span>Chi tiết</span>
+                                                                    </h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="row align-items-center">
+                                                                        <div class="form-group col-sm-4">
+                                                                            <label>Gói hợp đồng *</label>
+                                                                            <select #hopdongthauCombobox name="hopdongCode" class="form-control" [(ngModel)]="contractpayment.contractCode"
+                                                                                    [attr.data-live-search]="true" jq-plugin="selectpicker" required>
+                                                                                <option value="">{{emptyText}}</option>
+                                                                                <option *ngFor="let item of hopDongThaus" [value]="item.value">{{item.displayText}}</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="form-group col-sm-4">
+                                                                            <label>Đợt *</label>
+                                                                            <input #addressInput="ngModel" class="form-control" type="text" name="dot"
+                                                                                   [(ngModel)]="contractpayment.timePayment" required maxlength="64">
+                                                                        </div>
+                                                                        <div class="form-group col-sm-4">
+                                                                            <label>Ngày dự kiến *</label>
+                                                                            <input #addressInput="ngModel" class="form-control" type="date" name="ngayDuKien"
+                                                                                   [(ngModel)]="contractpayment.paymentDate" required maxlength="64">
+                                                                        </div>
+                                                                        <div class="form-group col-sm-4">
+                                                                            <label>Phần trăm *</label>
+                                                                            <input #addressInput="ngModel" class="form-control" type="text" name="phanTram"
+                                                                                   [(ngModel)]="contractpayment.ratio" required maxlength="64">
+                                                                        </div>
+                                                                        <div class="form-group col-sm-4">
+                                                                            <label>Số tiền *</label>
+                                                                            <input #addressInput="ngModel" class="form-control" type="text" name="soTien"
+                                                                                   [(ngModel)]="contractpayment.money" required maxlength="64">
+                                                                        </div>
+                                                                        <div class="form-group col-sm-4">
+                                                                            <label>Diễn giải *</label>
+                                                                            <input #addressInput="ngModel" class="form-control" type="text" name="maDonViTrungThau"
+                                                                                   [(ngModel)]="contractpayment.content" required maxlength="64">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                    <button type="submit" class="btn btn-primary">
+                                                                        <i class="fa fa-save"></i>
+                                                                        <span>{{l("Save")}}</span>
+                                                                    </button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div *ngIf="hopdongthau.id" class="form-group col-sm-11" style="margin-left: 3%;">
+                                    <ngForm #paymentContractForm="ngForm" autocomplete="off">
+                                        <div class="m-form m-form--label-align-right" id="TextsFilterForm">
+                                            <div class="row align-items-center m--margin-bottom-10">
+                                                <div class="input-group col-sm-10">
+                                                    <button (click)="applyFiltersContractPayment()" class="btn btn-primary" type="button">
+                                                        <i class="icon-refresh"></i>
+                                                        {{l("Refresh")}}
+                                                    </button>
+                                                </div>
+                                                <div class="input-group col-sm-2">
+                                                    <button type="button" class="btn btn-info input-group-text" data-toggle="modal" data-target="#myModalPayment" style="padding-right: 24%;">Thêm lịch thanh toán</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ngForm>
+                                    <div class="row align-items-center">
+                                        <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                                            <p-table #dataTable (onLazyLoad)="getContractPayments($event)" [value]="primengTableHelper.records"
+                                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                                                     [responsive]="primengTableHelper.isResponsive">
+                                                <ng-template pTemplate="header">
+                                                    <tr>
+                                                        <th pSortableColumn="name">
+                                                            Đợt
+                                                            <p-sortIcon field="name"></p-sortIcon>
+                                                        </th>
+                                                        <th pSortableColumn="address">
+                                                            Ngày dự kiến
+                                                        </th>
+                                                        <th pSortableColumn="info">
+                                                            Phần trăm
+                                                            <p-sortIcon field="info"></p-sortIcon>
+                                                        </th>
+                                                        <th pSortableColumn="info">
+                                                            Số tiền
+                                                            <p-sortIcon field="info"></p-sortIcon>
+                                                        </th>
+                                                        <th pSortableColumn="info">
+                                                            Diễn giải
+                                                            <p-sortIcon field="info"></p-sortIcon>
+                                                        </th>
+                                                        <th pSortableColumn="info">
+                                                            Action
+                                                            <p-sortIcon field="info"></p-sortIcon>
+                                                        </th>
+                                                    </tr>
+                                                </ng-template>
+                                                <ng-template pTemplate="body" let-record="$implicit">
+                                                    <tr>
+                                                        <td>
+                                                            <span class="ui-column-title">Đợt</span>
+                                                            <span title="{{record.timePayment}}">{{truncateString(record.timePayment)}}</span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="ui-column-title">Ngày dự kiến</span>
+                                                            <span title="{{record.paymentDate}}">{{truncateString(record.paymentDate)}}</span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="ui-column-title">Phần trăm</span>
+                                                            <span title="{{record.ratio}}">{{truncateString(record.ratio)}}</span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="ui-column-title">Số tiền</span>
+                                                            <span title="{{record.money}}">{{truncateString(record.money)}}</span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="ui-column-title">Diễn giải</span>
+                                                            <span title="{{record.content}}">{{truncateString(record.content)}}</span>
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" class="bg-success" [disabled]="record.disable" *ngIf="record.timePayment" (click)="setSelectedPayment(record); record.disable=true" style="border-radius: 5px 5px; cursor:pointer;"><span class="fa fa-plus"></span></button>
+                                                        </td>
+                                                    </tr>
+                                                </ng-template>
+                                            </p-table>
+                                            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                                {{l('NoData')}}
+                                            </div>
+                                            <div class="primeng-paging-container">
+                                                <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}" #paginator
+                                                             (onPageChange)="getContractPayments($event)"
+                                                             [totalRecords]="primengTableHelper.totalRecordsCount"
+                                                             [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                                </p-paginator>
+                                                <span class="total-records-count">
+                                                    {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a routerLink="/app/gwebsite/hopdongthau">
+                                    <button [disabled]="saving" type="button" class="btn btn-default"
+                                            (click)="close()">
+                                        {{l("Cancel")}}
+                                    </button>
+                                </a>
+                                <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                                        [busyText]="l('SavingWithThreeDot')">
+                                    <i class="fa fa-save"></i>
+                                    <span>{{l("Save")}}</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

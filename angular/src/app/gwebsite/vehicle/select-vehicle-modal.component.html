@@ -1,0 +1,102 @@
+<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewModal"
+    aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Chọn tài sản")}}</span>
+                    <!-- <span *ngIf="!customer.id">{{l("CreateNewCustomer")}}</span> -->
+                </h4>
+                <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+
+
+
+            </div>
+            <div class="modal-body">
+                <div class="form-control">
+                    <div class="input-group">
+                        <input [(ngModel)]="vehicleName" name="vehicleName" autoFocus class="form-control"
+                            placeholder="Nhập tên xe" type="text">
+                        <span class="input-group-btn">
+                            <button (click)="applyFilters()" class="btn btn-primary" type="submit"><i
+                                    class="icon-refresh"></i>
+                                {{l("Refresh")}}</button>
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable (onLazyLoad)="getVehicles($event)" [value]="primengTableHelper.records"
+                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                            [responsive]="primengTableHelper.isResponsive">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>
+                                        Chọn xe
+                                    </th>
+                                    <th pSortableColumn="mats">
+                                        Mã xe
+                                        <p-sortIcon field="mats"></p-sortIcon>
+                                    </th>
+
+                                    <th pSortableColumn="name">
+                                        Tên xe
+                                    </th>
+                                    <th>{{l('Edit')}}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td>
+
+                                        <button class="btn btn-primary" type="button"
+                                            (click)="selectedVehicle(record.id)">{{l("Chọn")}}</button>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Mã xe</span>
+                                        <span title="{{record.idVehicle}}">{{truncateString(record.idVehicle)}}</span>
+                                    </td>
+
+                                    <td>
+                                        <span class="ui-column-title">Tên xe</span>
+                                        <span title="{{record.name}}">{{truncateString(record.name)}}</span>
+                                    </td>
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}" #paginator
+                                (onPageChange)="getVehicles($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!-- <button [disabled]="saving" type="button" class="btn btn-default"
+                    (click)="close()">{{l("Cancel")}}</button>
+                <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                    [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                    <span>{{l("Save")}}</span></button> -->
+            </div>
+        </div>
+    </div>
+
+</div>

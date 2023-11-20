@@ -1,0 +1,67 @@
+<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewModal"
+    aria-hidden="true" [config]="{ backdrop: 'static' }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span *ngIf="vehicle.id">{{ l("EditVehicle") }}: {{ vehicle.name }}</span>
+                    <span *ngIf="!vehicle.id">{{ l("CreateNewVehicle") }}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Tên xe</label>
+                    <p>{{ vehicle.name }}</p>
+                </div>
+                <div class="form-group">
+                    <label>Số xe</label>
+                    <p>{{ vehicle.number }}</p>
+                </div>
+                <div class="form-group">
+                    <label>Loại Xe</label>
+                    <p>{{ vehicle.idTypeCar }}</p>
+                </div>
+                <div class="form-group">
+                    <label>Giá</label>
+                    <p>{{ vehicle.price }}</p>
+                </div>
+                <div class="form-group">
+                    <label>Model</label>
+                    <p>{{ vehicle.model }}</p>
+                </div>
+                <div class="form-group">
+                    <label>Trạng thái</label>
+                    <p>{{ vehicle.status }}</p>
+                </div>
+                <div class="form-group">
+                    <label>Số máy</label>
+                    <p>{{ vehicle.machineNumber }}</p>
+                </div>
+                <div class="form-group">
+                    <label>Màu</label>
+                    <p>{{ vehicle.color }}</p>
+                </div>
+                <div class="form-group">
+                    <label>Tên chủ sở hữu</label>
+                    <p>{{ vehicle.hostName }}</p>
+                </div>
+                <div class="form-group">
+                    <label>Số động cơ</label>
+                    <p>{{ vehicle.nameEngine }}</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">
+                    {{ l("Cancel") }}
+                </button>
+                <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                    [busyText]="l('SavingWithThreeDot')">
+                    <i class="fa fa-save"></i> <span>{{ l("Save") }}</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

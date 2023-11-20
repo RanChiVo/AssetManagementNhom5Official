@@ -1,0 +1,82 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Mã Kế Hoạch *</label>
+                        <input #kinhPhiInput="ngModel" class="form-control" type="text" name="maKeHoach"
+                               [(ngModel)]="shoppingPlanDetail.maKeHoach" required maxlength="64">
+                        <validation-messages [formCtrl]="maKeHoachInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Mã Sãn phẩm *</label>
+                        <input #maSPInput="ngModel" class="form-control" type="text" name="maSP"
+                               [(ngModel)]="shoppingPlanDetail.maSP" required maxlength="64">
+                        <validation-messages [formCtrl]="maSPInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Tên Sản Phẩm *</label>
+                        <input #phongBanInput="ngModel" class="form-control" type="text" name="tenSP"
+                               [(ngModel)]="shoppingPlanDetail.tenSP" required maxlength="64">
+                        <validation-messages [formCtrl]="tenSPInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Đơn vị *</label>
+                        <input #namInput="ngModel" class="form-control" type="text" name="donVi"
+                               [(ngModel)]="shoppingPlanDetail.donVi" required maxlength="64">
+                        <validation-messages [formCtrl]="donViInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Gía Trị 1 SP *</label>
+                        <input #namInput="ngModel" class="form-control" type="text" name="giaTriMotSP"
+                               [(ngModel)]="shoppingPlanDetail.giaTriMotSP" required maxlength="64">
+                        <validation-messages [formCtrl]="giaTriMotSPInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Số lượng *</label>
+                        <input #namInput="ngModel" class="form-control" type="text" name="soLuong"
+                               [(ngModel)]="shoppingPlanDetail.soLuong" required maxlength="64">
+                        <validation-messages [formCtrl]="soLuongInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Tháng kế hoạch *</label>
+                        <input #namInput="ngModel" class="form-control" type="number" name="thangKeHoach"
+                               [(ngModel)]="shoppingPlanDetail.thangKeHoach" required maxlength="64">
+                        <validation-messages [formCtrl]="thangKeHoachInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Số Lượng Thực Hiện *</label>
+                        <input #namInput="ngModel" class="form-control" type="number" name="soLuongThucHien"
+                               [(ngModel)]="shoppingPlanDetail.soLuongThucHien" required maxlength="64">
+                        <validation-messages [formCtrl]="soLuongThucHienInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Tháng Thực Hiện *</label>
+                        <input #namInput="ngModel" class="form-control" type="number" name="thanhThucHien"
+                               [(ngModel)]="shoppingPlanDetail.thanhThucHien" required maxlength="64">
+                        <validation-messages [formCtrl]="thanhThucHienInput"></validation-messages>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                            (click)="close()">
+                        {{l("Cancel")}}
+                    </button>
+                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                            [busyText]="l('SavingWithThreeDot')">
+                        <i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

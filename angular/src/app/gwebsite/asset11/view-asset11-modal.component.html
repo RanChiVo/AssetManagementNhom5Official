@@ -1,0 +1,91 @@
+<div
+    bsModal
+    #viewModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="viewModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span *ngIf="asset11.id"
+                        >{{ l("EditAsset11") }}: {{ asset11.name }}</span
+                    >
+                    <span *ngIf="!asset11.id">{{ l("View Asset11") }}</span>
+                </h4>
+                <button
+                    type="button"
+                    class="close"
+                    (click)="close()"
+                    [attr.aria-label]="l('Close')"
+                >
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Asset Name</label>
+                    <p>{{ asset11.name }}</p>
+                </div>
+                <div class="form-group">
+                    <label>Asset Id</label>
+                    <p>{{ asset11.assetId }}</p>
+                </div>
+                <div class="form-group">
+                    <label>Price</label>
+                    <p>{{ asset11.price }}</p>
+                </div>
+                <div class="form-group">
+                    <label>Vat</label>
+                    <p>{{ asset11.vat }}</p>
+                </div>
+                <div class="form-group">
+                    <label>Quantity</label>
+                    <p>{{ asset11.quantity }}</p>
+                </div>
+                <div class="form-group">
+                    <label>Time</label>
+                    <p>{{ asset11.time }}</p>
+                </div>
+                <div class="form-group">
+                    <label>Debit Account</label>
+                    <p>{{ asset11.debitAccount }}</p>
+                </div>
+                <div class="form-group">
+                    <label>Credit Account</label>
+                    <p>{{ asset11.creditAccount }}</p>
+                </div>
+                <div class="form-group">
+                    <label>Is Accounted</label>
+                    <p>{{ asset11.isAccounted }}</p>
+                </div>
+                <div class="form-group">
+                    <label>Is Depreciated</label>
+                    <p>{{ asset11.isDepreciated }}</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button
+                    [disabled]="saving"
+                    type="button"
+                    class="btn btn-default"
+                    (click)="close()"
+                >
+                    {{ l("Cancel") }}
+                </button>
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                    [buttonBusy]="saving"
+                    [busyText]="l('SavingWithThreeDot')"
+                >
+                    <i class="fa fa-save"></i> <span>{{ l("Save") }}</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

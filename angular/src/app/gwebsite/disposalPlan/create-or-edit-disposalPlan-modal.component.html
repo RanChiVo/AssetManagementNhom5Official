@@ -1,0 +1,61 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="disposalPlan.id">Cập nhật kế hoạch tại {{disposalPlan.phongBan}} thuộc {{disposalPlan.khuVuc}}</span>
+                        <span *ngIf="!disposalPlan.id">Tạo mới kế hoạch</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Khu vực *</label>
+                        <input #khuVucInput="ngModel" class="form-control" type="text" name="khuVuc"
+                               [(ngModel)]="disposalPlan.khuVuc" required maxlength="64">
+                        <validation-messages [formCtrl]="khuVucInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Phòng Ban *</label>
+                        <input #phongBanInput="ngModel" class="form-control" type="text" name="phongBan"
+                               [(ngModel)]="disposalPlan.phongBan" required maxlength="64">
+                        <validation-messages [formCtrl]="phongBanInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Năm *</label>
+                        <input #namInput="ngModel" class="form-control" type="number" name="nam"
+                               [(ngModel)]="disposalPlan.nam" required maxlength="64">
+                        <validation-messages [formCtrl]="namInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Mã Kế Hoạch *</label>
+                        <input #kinhPhiInput="ngModel" class="form-control" type="text" name="maKeHoach"
+                               [(ngModel)]="disposalPlan.maKeHoach" required maxlength="64">
+                        <validation-messages [formCtrl]="maKeHoachInput"></validation-messages>
+                        <div class="form-group">
+                            <label>Tình Trạng</label>
+                            <input #kinhPhiInput="ngModel" class="form-control" type="text" name="trangThai"
+                                   [(ngModel)]="disposalPlan.trangThai" required maxlength="64" readonly>
+                            <validation-messages [formCtrl]="tinhTrangInput"></validation-messages>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                            (click)="close()">
+                        {{l("Cancel")}}
+                    </button>
+                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                            [busyText]="l('SavingWithThreeDot')">
+                        <i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

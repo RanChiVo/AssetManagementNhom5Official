@@ -1,0 +1,33 @@
+<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewModal"
+    aria-hidden="true" [config]="{backdrop: 'static'}">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="loaiNhaCungCap.id">{{l("EditLoaiNhaCungCap")}}: {{loaiNhaCungCap.maLoaiNhaCungCap}}</span>
+                        <span *ngIf="!loaiNhaCungCap.id">{{l("CreateNewNhaCungCap")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Mã Loại Nhà Cung Cấp</label>
+                        <p>{{loaiNhaCungCap.maLoaiNhaCungCap}}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Tên Nhà Loại nhà cung cấp</label>
+                        <p>{{loaiNhaCungCap.tenLoaiNhaCungCap}}</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </div>
+        </div>
+    </div>

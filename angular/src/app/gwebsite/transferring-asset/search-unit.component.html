@@ -1,0 +1,136 @@
+<div bsModal #searchModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="searchModal"
+    aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #editForm="ngForm" role="form" novalidate (ngSubmit)="acccept()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{l("Tiềm kiếm đơn vị")}}:</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    
+                    <div class="m-form m-form--label-align-right " id="TextsFilterForm">
+                        <div class="row align-items-center m--margin-bottom-10 ">
+                            <div class="col-sm-12">
+                                <div class="input-group">
+                                    <div class="col-xl-6 m--margin-top-10">
+                                        <label>{{l('AssetRegionName')}}</label>
+                                        <select #assetRegionCombobox name="assetRegionName1" class="form-control" [(ngModel)]="assetRegionName">
+                                            <option value="" selected> Lấy tất cả miền</option>
+                                            <option *ngFor="let getAR of dataAssetRegion" [value]="getAR.value">
+                                                {{getAR.displayText}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xl-6 m--margin-top-40-desktop m--margin-top-20-tablet-and-mobile" align="left">
+                                        <button (click)="reloadComboboxFather()" type="button" class="btn btn-primary">
+                                            <i class="icon-filter"> {{l("Get Asset Father By Asset Region")}}</i>
+                                        </button>
+                                    </div>
+                                    <div class="col-xl-6 m--margin-top-10">
+                                        <label>{{l('AssetFatherName')}}</label>
+                                        <div class="form-group">
+                                            <select #assetFatherCombobox name="assetFatherName1" class="form-control" [(ngModel)]="assetFatherName">
+                                                <option value="" selected> Lấy tất cả tài sản cha</option>
+                                                <option *ngFor="let getFA of dataAssetFather" [value]="getFA.displayText">
+                                                    {{getFA.displayText}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 m--margin-top-10">
+                                        <label>{{l('AssetUnitName')}}</label>
+                                        <input [(ngModel)]="assetUnitName" name="AssetUnitName1" class="form-control" placeholder="Nhập tên đơn vị " type="text">
+                                    </div>
+                                    <div class="col-xl-6 m--margin-top-10">
+                                        <label> {{l('SelectedUnitId')}}</label>
+                                        <input [(ngModel)]="selectedUnitId" name="selectedUnitId1" class="form-control" type="number" readonly>
+                                    </div>
+                                    <div class="col-xl-6 m--margin-top-40-desktop m--margin-top-20-tablet-and-mobile" align="right">
+                                        <button (click)="applyFilters()" type="button" class="btn btn-primary">
+                                            <i class="icon-filter"> {{l("Refresh")}}</i>
+                                        </button>
+                                        <button [buttonBusy]="saving" type="submit" class="btn btn-primary "
+                                                [busyText]="l('SavingWithThreeDot')">
+                                            <i class="fa fa-save"></i>
+                                            <span>{{l("Select and Close")}}</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row align-items-center m--margin-top-40">
+                        <!--<Primeng-TurboTable-Start>-->
+                        <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTable (onLazyLoad)="getAssetUnits($event)" [value]="primengTableHelper.records"
+                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true" [responsive]="primengTableHelper.isResponsive">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th pSortableColumn="assetFatherName">
+                                            Đơn vị cha
+                                            <p-sortIcon field="assetFatherName"></p-sortIcon>
+                                        </th>
+										<th pSortableColumn="assetUnitID">
+                                            Mã đơn vị  
+                                            <p-sortIcon field="assetUnitID"></p-sortIcon>
+                                        </th>
+										<th pSortableColumn="assetUnitName">
+                                            Tên đơn vị
+                                            <p-sortIcon field="assetUnitName"></p-sortIcon>
+                                        </th>
+                                        <th>{{l('Select')}}</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit">
+                                    <tr>
+                                        <td>
+                                            <span class="ui-column-title">Đơn vị cha</span>
+                                            <span title="{{record.assetFatherName}}">{{truncateString(record.assetFatherName)}}</span>
+                                        </td>
+                                        <td>
+                                            <span class="ui-column-title">Mã đơn vị</span>
+                                            <span title="{{record.assetUnitID}}">{{truncateString(record.assetUnitID)}}</span>
+                                        </td>
+                                        <td>
+                                            <span class="ui-column-title">Tên đơn vị</span>
+                                            <span title="{{record.assetUnitName}}">{{truncateString(record.assetUnitName)}}</span>
+                                        </td>
+                                        <td>
+                                            <button class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" type="button" (click)="selectUnit(record.assetUnitID)" title="{{l('Select')}}">
+                                                <i class="fa fa-check-circle" [attr.aria-label]="l('Select')"></i>
+                                            </button>
+                                        </td>
+                                        
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                {{l('NoData')}}
+                            </div>
+                            <div class="primeng-paging-container">
+                                <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}" #paginator (onPageChange)="getAssetUnits($event)"
+                                             [totalRecords]="primengTableHelper.totalRecordsCount" [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                                </span>
+                            </div>
+                        </div>
+                        <!--<Primeng-TurboTable-End>-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" (click)="close()" type="button" class="btn btn-default">
+                        <i class="ui-icon-cancel"> {{l("Close")}}</i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

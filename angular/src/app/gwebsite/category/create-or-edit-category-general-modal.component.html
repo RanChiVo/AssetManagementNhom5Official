@@ -1,0 +1,63 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade category-modal" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal"
+    aria-hidden="true" [config]="{backdrop: false}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="category.id">{{l("Edit category")}}: {{category.name}}</span>
+                        <span *ngIf="!category.id">{{l("Create new category")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>{{l("Category Type")}} *</label>
+                        <select *ngIf="!category.id" #categoryCombobox name="categoryType" class="form-control"
+                            [(ngModel)]="selectedType" title="Select type..." (change)="this.onChangeType()" required>
+                            <option *ngFor="let item of categoryTypes" [value]="item.id">{{item.name}}</option>
+                        </select>
+                        <select *ngIf="category.id" #categoryCombobox name="categoryType" class="form-control"
+                            [(ngModel)]="selectedType" title={{category.categoryType}} (change)="this.onChangeType()">
+                            <option *ngFor="let item of categoryTypes" [value]="item.id">{{item.name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>{{l("Category Name")}} *</label>
+                        <input #nameInput="ngModel" class="form-control" type="text" name="Name"
+                            [(ngModel)]="category.name" required maxlength="64">
+                        <validation-messages [formCtrl]="nameInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>{{l("Category Symbol")}}</label>
+                        <input #symbolInput="ngModel" class="form-control" type="text" name="Symbol"
+                            [(ngModel)]="category.symbol" maxlength="64">
+                        <validation-messages [formCtrl]="symbolInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>{{l("Description")}}</label>
+                        <input #descriptionInput="ngModel" class="form-control" type="text" name="Description"
+                            [(ngModel)]="category.description">
+                        <validation-messages [formCtrl]="descriptionInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>{{l("Status")}}</label>
+                        <select class="form-control" #statusInput name="categoryStatus" [(ngModel)]="category.status"
+                            title={{category.status}}>
+                            <option value='Active'>Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                        <validation-messages [formCtrl]="statusInput"></validation-messages>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="!editForm.form.valid" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

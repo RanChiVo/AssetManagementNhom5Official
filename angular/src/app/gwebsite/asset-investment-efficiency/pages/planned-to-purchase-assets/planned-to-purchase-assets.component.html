@@ -1,0 +1,279 @@
+<div [@routerTransition]>
+    <div class="group-6">
+        <div class="m-subheader">
+            <div class="d-flex align-items-center">
+                <div class="mr-auto col-xs-6">
+                    <h3 class="m-subheader__title">
+                        <span>{{l("Quản lý giá trị dự kiến đầu tư cho việc mua tài sản")}}</span>
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="m-content">
+            <div class="m-portlet m-portlet--mobile rounded-border m-0">
+                <div class="m-portlet__body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="statistics-period">Chọn khoảng thời gian cần xem thống kê</label>
+                            <select id="statistics-period" class="form-control" (change)="changeStatisticsPeriod($event)">
+                                <option value="0">Hôm nay</option>
+                                <option value="1">Tuần này</option>
+                                <option value="2">Tháng này</option>
+                                <option value="3">Quý này</option>
+                                <option value="4">Năm nay</option>
+                                <option value="5">Khoảng thời gian khác</option>
+                            </select>
+                        </div>
+    
+                        <div class="col-md-4" *ngIf="showDateRangePicker">
+                            <label for="starting-date">Ngày bắt đầu</label>
+                            <input type="date" id="starting-date" class="form-control" [(ngModel)]="startingDate" (change)="changeStartingDate($event)" />
+                        </div>
+    
+                        <div class="col-md-4" *ngIf="showDateRangePicker">
+                            <label for="ending-date">Ngày kết thúc</label>
+                            <input type="date" id="ending-date" class="form-control" [(ngModel)]="endingDate" (change)="changeEndingDate($event)" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="m-subheader">
+            <div class="d-flex align-items-center">
+                <div class="mr-auto col-xs-6">
+                    <h3 class="m-subheader__title">
+                        <span>Số liệu thống kê tổng quan</span>
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="section general-statistics-cards" *ngIf="activeMainTab === 0">
+            <div class="general-statistics-card">
+                <div class="general-statistics-card-header">
+                    <h4 class="general-statistics-card-title">Tổng số vốn dự kiến đầu tư</h4>
+                    <p class="general-statistics-card-date-range"><i class="far fa-calendar-alt"></i> {{ getDateRangeString(startingDate, endingDate) }}</p>  
+                </div>
+        
+                <div class="general-statistics-card-body">
+                    <span class="general-statistics-card-value">{{ addThousandSeparator(generalStatisticsData['CurrentTotalInvestedAmount']) }}</span>
+                    <span [class]="generalStatisticsData['TotalInvestedAmountRatio'] > 0 ? 'general-statistics-card-offset--up' : 'general-statistics-card-offset--down'"><i [class]="generalStatisticsData['TotalInvestedAmountRatio'] > 0 ? 'fas fa-caret-up' : 'fas fa-caret-down'"></i> {{ generalStatisticsData['TotalInvestedAmountRatio'].toFixed(2) }}%</span>
+                </div>
+    
+                <div class="general-statistics-card-footer">
+                    <div>Đơn vị tính: VNĐ</div>
+                </div>
+            </div>
+
+            <div class="general-statistics-card">
+                <div class="general-statistics-card-header">
+                    <h4 class="general-statistics-card-title">Tổng số lượng tài sản dự kiến mua</h4>
+                    <p class="general-statistics-card-date-range"><i class="far fa-calendar-alt"></i> {{ getDateRangeString(startingDate, endingDate) }}</p>  
+                </div>
+        
+                <div class="general-statistics-card-body">
+                    <span class="general-statistics-card-value">{{ addThousandSeparator(generalStatisticsData['CurrentTotalPurchasedAssets']) }}</span>
+                    <span [class]="generalStatisticsData['TotalPurchasedAssetsRatio'] > 0 ? 'general-statistics-card-offset--up' : 'general-statistics-card-offset--down'"><i [class]="generalStatisticsData['TotalPurchasedAssetsRatio'] > 0 ? 'fas fa-caret-up' : 'fas fa-caret-down'"></i> {{ generalStatisticsData['TotalPurchasedAssetsRatio'].toFixed(2) }}%</span>
+                </div>
+    
+                <div class="general-statistics-card-footer">
+                    Đơn vị tính: Tài sản
+                </div>
+            </div>
+        </div>
+
+        <div class="m-subheader">
+            <div class="d-flex align-items-center mb-3">
+                <div class="mr-auto col-xs-6">
+                    <h3 class="m-subheader__title">
+                        <span>Biểu đồ thống kê tổng quan</span>
+                    </h3>
+                </div>
+    
+                <div class="ml-auto col-xs-6">
+                    <div class="section-option">
+                        <select class="form-control" [(ngModel)]="generalStatisticsChart1ComparisonValue" (change)="changeGeneralStatisticsChart1ComparisonValue($event)">
+                            <option value="0">Không so sánh</option>
+                            <option value="1">Có so sánh</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="section general-statistics-chart rounded-border">
+            <div class="general-statistics-chart-header">
+                <div class="general-statistics-chart-left">
+                    <span [class]="activeGeneralStatisticsChart1Tab === 0 ? 'tab-active' : 'tab'" (click)="changeGeneralStatisticsChart1Tab(0)">Số vốn dự kiến đầu tư</span>
+                    <span [class]="activeGeneralStatisticsChart1Tab === 1 ? 'tab-active' : 'tab'" (click)="changeGeneralStatisticsChart1Tab(1)">Số lượng tài sản dự kiến mua</span>
+                </div>
+    
+                <div class="general-statistics-chart-right">
+                    <div class="option" *ngIf="showGeneralStatisticsChart1ValueTypeSelection">
+                        <select class="form-control" [(ngModel)]="generalStatisticsChart1ValueType" (change)="changeGeneralStatisticsChart1ValueType($event)">
+                            <option value="0">Giá trị gốc</option>
+                            <option value="1">Tỉ lệ phần trăm</option>
+                        </select>
+                    </div>
+    
+                </div>
+            </div>
+    
+            <div class="general-statistics-chart-body">
+                <canvas baseChart
+                    [datasets]="generalStatisticsChart1Dataset"
+                    [labels]="generalStatisticsChart1Labels"
+                    [options]="generalStatisticsChart1Options"
+                    [chartType]="generalStatisticsChart1Type">
+                </canvas>
+            </div>
+        </div>
+
+        <div class="m-subheader">
+            <div class="d-flex align-items-center mb-3">
+                <div class="mr-auto col-xs-6">
+                    <h3 class="m-subheader__title">
+                        <span>Biểu đồ thống kê tỉ trọng giữa các nhóm tài sản</span>
+                    </h3>
+                </div>
+    
+                <div class="ml-auto col-xs-6">
+                </div>
+            </div>
+        </div>
+
+        <div class="section general-statistics-chart rounded-border">
+            <div class="general-statistics-chart-header">
+                <div class="general-statistics-chart-left">
+                    <span [class]="activeGeneralStatisticsChart2Tab === 0 ? 'tab-active' : 'tab'" (click)="changeGeneralStatisticsChart2Tab(0)">Số vốn dự kiến đầu tư</span>
+                    <span [class]="activeGeneralStatisticsChart2Tab === 1 ? 'tab-active' : 'tab'" (click)="changeGeneralStatisticsChart2Tab(1)">Số lượng tài sản dự kiến mua</span>
+                </div>
+    
+                <div class="general-statistics-chart-right">
+                    <div class="option">
+                        <select class="form-control" [(ngModel)]="generalStatisticsChart2ValueType" (change)="changeGeneralStatisticsChart2ValueType($event)">
+                            <option value="0">Giá trị gốc</option>
+                            <option value="1">Tỉ lệ phần trăm</option>
+                        </select>
+                    </div>
+    
+                </div>
+            </div>
+
+            <div class="general-statistics-chart-body mt-3">
+                <div class="row">
+                    <div class="col-md-6 offset-md-3">
+                        <h6 class="text-center">{{ getDateRangeString(startingDate, endingDate) }}</h6>
+                        <canvas baseChart
+                            [data]="generalStatisticsChart2Dataset"
+                            [labels]="generalStatisticsChart2Labels"
+                            [options]="eneralStatisticsChart2Options"
+                            [colors]="generalStatisticsChart2Colors"
+                            [chartType]="generalStatisticsChart2Type">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="m-subheader">
+            <div class="d-flex align-items-center">
+                <div class="mr-auto col-xs-6">
+                    <h3 class="m-subheader__title">
+                        <span>Bảng số liệu thống kê chi tiết</span>
+                    </h3>
+                </div>
+
+                <div class="ml-auto col-xs-6">
+                </div>
+            </div>
+        </div>
+        
+        <div class="section data-table-section mt-3">
+            <div class="data-table-filters mb-3">
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label>Từ khóa</label>
+                        <input class="form-control" type="text" placeholder="Nhập từ khóa cần tìm kiếm..." (change)="changeDetailedDataTableKeyword($event)" />
+                    </div>
+                </div>
+
+                {{ detailedDataTableKeyword }}
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Ngày bắt đầu</label>
+                        <input class="form-control" type="date" [(ngModel)]="detailedDataTableStartingDate" (change)="changeDetailedDataTableStartingDate($event)" />
+                    </div>
+        
+                    <div class="col-md-3">
+                        <label>Ngày kết thúc</label>
+                        <input class="form-control" type="date" [(ngModel)]="detailedDataTableEndingDate" (change)="changeDetailedDataTableEndingDate($event)" />
+                    </div>
+
+                    <div class="col-md-3">
+                        <label>Số kết quả hiển thị</label>
+                        <select class="form-control" [(ngModel)]="detailedDataTablePageSize" (change)="changeDetailedDataTablePageSize($event)">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="500">500</option>
+                            <option value="1000">1000</option>
+                            <option value="2000">2000</option>
+                        </select>
+                    </div>
+        
+                    <div class="col-md-3">
+                        <label>Nhóm tài sản</label>
+                        <select class="form-control" [(ngModel)]="detailedDataTableAssetType" (change)="changeDetailedDataTableAssetType($event)">
+                            <option value="-1">Tất cả</option>
+                            <option [value]="type['AssetTypeId']" *ngFor="let type of detailedDataTableAssetTypes">{{ type['AssetTypeName'] }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Ngày ghi nhận</th>
+                        <th>Mã nhóm tài sản</th>
+                        <th>Tên nhóm tài sản</th>
+                        <th>Số lượng (Tài sản)</th>
+                        <th>Tỉ lệ % (Số lượng tài sản)</th>
+                        <th>Giá trị đầu tư (VNĐ)</th>
+                        <th>Tỉ lệ % (Giá trị đầu tư)</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let record of detailedDataTableData" (click)="openDetailedPopup(record)">
+                        <td class="text-bold">{{ record['RecordedDate'] | date:'dd/MM/yyyy' }}</td>
+                        <td class="text-bold">{{ record['AssetTypeId'] }}</td>
+                        <td>{{ record['AssetTypeName'] }}</td>
+                        <td>{{ addThousandSeparator(record['Quantity']) }}</td>
+                        <td>{{ ((record['Quantity'] / generalStatisticsData['CurrentTotalPurchasedAssets']) * 100).toFixed(2) }}</td>
+                        <td>{{ addThousandSeparator(record['Amount']) }}</td>
+                        <td>{{ ((record['Amount'] / generalStatisticsData['CurrentTotalInvestedAmount']) * 100).toFixed(2) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="table-pagination">
+                <div class="row">
+                    <div class="col-md-6">
+                        Trang <strong>{{ detailedDataTablePage }}</strong> trong tổng số <strong>{{ detailedDataTableTotalPages }}</strong>
+                    </div>
+
+                    <div class="col-md-6 text-right">
+                        <span class="tab" (click)="navigateToPreviousPage()"><i class="fas fa-chevron-left"></i></span>
+                        <span class="tab" (click)="navigateToNextPage()"><i class="fas fa-chevron-right"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,76 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="insurrance.id">Cập nhật bảo hiểm: {{ insurrance.insurranceId }}</span>
+                        <span *ngIf="!insurrance.id">Tạo mới bảo hiểm</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Mã bảo hiểm *</label>
+                        <input #insurranceIdInput="ngModel" class="form-control" type="text" name="insurranceId"
+                            [(ngModel)]="insurrance.insurranceId" required disabled maxlength="64">
+                        <validation-messages [formCtrl]="insurranceIdInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày mua bảo hiểm *</label>
+                        <input #purchaseDateInput="ngModel" class="form-control" type="date" name="purchaseDate"
+                            [(ngModel)]="insurrance.purchaseDate" required maxlength="64">
+                        <validation-messages [formCtrl]="purchaseDateInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày hết hạn bảo hiểm *</label>
+                        <input #expiryDateInput="ngModel" class="form-control" type="date" name="expiryDate"
+                            [(ngModel)]="insurrance.expiryDate" required maxlength="64">
+                        <validation-messages [formCtrl]="expiryDateInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Thời hạn bảo hiểm *</label>
+                        <input #durationInput="ngModel" class="form-control" type="text" name="duration"
+                            [(ngModel)]="insurrance.duration" required maxlength="64">
+                        <validation-messages [formCtrl]="durationInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Công ty bảo hiểm *</label>
+                        <input #companyInput="ngModel" class="form-control" type="text" name="company"
+                            [(ngModel)]="insurrance.company" required maxlength="64">
+                        <validation-messages [formCtrl]="companyInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Loại bảo hiểm *</label>
+                        <select #insurrancetypeCombobox name="InsurranceType" class="form-control" [(ngModel)]="selectedType"
+                            title="Select type..." (change)="this.onChangeType()"  required>
+                            <option *ngFor="let item of insurrancetypes" [value]="item.id">{{ item.insurranceTypeName }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Số tiền thanh toán *</label>
+                        <input #paymentsInput="ngModel" class="form-control" type="text" name="payments"
+                            [(ngModel)]="insurrance.payments" required maxlength="64">
+                        <validation-messages [formCtrl]="paymentsInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Trạng thái duyệt *</label>
+                        <input #statusInput="ngModel" class="form-control" type="text" name="status"
+                            [(ngModel)]="insurrance.status" required maxlength="64">
+                        <validation-messages [formCtrl]="statusInput"></validation-messages>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

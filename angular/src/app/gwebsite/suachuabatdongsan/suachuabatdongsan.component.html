@@ -1,0 +1,316 @@
+<div [@routerTransition]>
+
+    <div class="m-subheader ">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto col-xs-6">
+                <h3 class="m-subheader__title m-subheader__title--separator">
+                    <span>{{l("Quản Lý Sửa Chữa Bất Động Sản")}}</span>
+                </h3>
+                <span class="m-section__sub">
+                    {{l("Chi tiết sữa chữa")}}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <tabset class="tab-container tabbable-line">
+                    <!-- 
+                    Tab Sua CHua BDS     
+                    Tab Sua CHua BDS    
+                    Tab Sua CHua BDS    
+                     -->
+                    <tab customClass="m-tabs__item" (select)="InitTabSuaChua()" autofocus [active]='activeTabSuaChua'>
+                        <ng-template tabHeading>
+                            <button class="btn btn-default" type="submit" tabindex="-1" autofocus>
+                                {{l('Sửa chữa BDS')}}
+                            </button>
+                        </ng-template>
+
+                        <form autocomplete="off">
+                            <div class="m-form m-form--label-align-right" id="TextsFilterForm">
+                                <div class="row align-items-center m--margin-bottom-10">
+                                    <div class="col-sm-12">
+
+                                        <div class="form-control">
+                                            <label>{{l("Thông tin tài sản")}} *</label>
+                                            <br>
+                                            <div class="form-group">
+                                                <label>{{l("Mã tài sản")}} *</label>
+                                                <div class="form-group m-form__group row">
+                                                    <div class="col-lg-2 col-md-3 col-sm-4">
+                                                        <div class="form-group">
+                                                            <input #taisanInput="ngModel" class="form-control"
+                                                                type="text" name="TaiSan" [(ngModel)]="taisan.maTaiSan"
+                                                                disabled required maxlength="64">
+                                                            <validation-messages [formCtrl]="taisanInput">
+                                                            </validation-messages>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-3 col-sm-4">
+                                                        <button (click)="selectTaiSan()" class="btn btn-primary"><i
+                                                                class="fa fa-plus"></i>
+                                                            {{l("Chọn tài sản")}}</button>
+                                                    </div>
+                                                    <label>{{l("Tên tài sản")}} *</label>
+                                                    <div class="col-lg-2 col-md-3 col-sm-4">
+
+                                                        <div class="form-group">
+                                                            <input #tentaisanInput="ngModel" class="form-control"
+                                                                type="text" name="TenTaiSan" [(ngModel)]="tenTaiSan"
+                                                                disabled required>
+                                                            <validation-messages [formCtrl]="tentaisanInput">
+                                                            </validation-messages>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+
+                                        </div>
+                                        <!-- <input [(ngModel)]="maloaibds" name="maloaibds" autoFocus class="form-control"
+                                                placeholder="Nhập mã loại bđs" type="text">
+                                                 -->
+                                        <div class="form-control">
+                                            <label>{{l("Tìm theo phiếu sửa")}} *</label>
+                                            <br>
+                                            <div class="row m--margin-bottom-10">
+                                                <div class="col-xl-6">
+                                                    <label>{{l("Ngày đề xuất")}} *</label>
+                                                    <input [(ngModel)]="ngayDeXuat" name="ngayDeXuat"
+                                                        class="form-control" type="date">
+                                                </div>
+                                                <div class="col-xl-6">
+                                                    <label>{{l("Ngày sửa xong")}} *</label>
+                                                    <input [(ngModel)]="ngaySuaXong" name="ngaySuaXong"
+                                                        class="form-control" type="date">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span class="input-group-btn">
+                                            <button (click)="applyFilters()" class="btn btn-primary" type="submit"><i
+                                                    class="icon-refresh"></i>
+                                                {{l("Refresh")}}</button>
+                                            <div class="col-xs-6 text-right">
+                                                <button (click)="reset()" class="btn btn-primary" type="submit"><i
+                                                        class="icon-refresh"></i>
+                                                    {{l("Reset")}}</button>
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="row align-items-center">
+                            <!--<Primeng-TurboTable-Start>-->
+                            <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                                <p-table #dataTable (onLazyLoad)="getSuaChuaBatDongSans($event)"
+                                    [value]="primengTableHelper.records"
+                                    rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                    [lazy]="true" [responsive]="primengTableHelper.isResponsive">
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th >
+                                                STT
+                                            </th>
+                                            <th pSortableColumn="ngaydexuat">
+                                                Ngày đề xuất
+                                                <p-sortIcon field="ngaydexuat"></p-sortIcon>
+                                            </th>
+                                            <th pSortableColumn="ngaysuaxong">
+                                                Ngày sửa xong
+                                                <p-sortIcon field="ngaysuaxong"></p-sortIcon>
+                                            </th>
+                                            <th pSortableColumn="mataisan">
+                                                Mã tài sản
+                                                <p-sortIcon field="mataisan"></p-sortIcon>
+                                            </th>
+
+                                            <th >
+                                                Tên tài sản
+                                            </th>
+                                            <th >
+                                                Người đề xuất
+                                            </th>
+
+
+                                            <th >
+                                                Nhân viên phụ trách
+                                            </th>
+                                            <th pSortableColumn="trangthaisuachua">
+                                                Trạng thái
+                                                <p-sortIcon field="trangthaisuachua"></p-sortIcon>
+                                            </th>
+                                            <th>{{l('Duyệt')}}</th>
+
+                                            <th>{{l('Edit')}}</th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-record="$implicit">
+                                        <tr>
+
+                                            <td>
+                                                <span class="ui-column-title">STT</span>
+                                                <span title="{{record.id}}">{{truncateString(record.id)}}</span>
+                                            </td>
+
+                                            <td>
+                                                <span class="ui-column-title">Ngày đề xuất</span>
+                                                <span
+                                                    title="{{record.ngayDeXuat| date:'dd-MMM-yyyy'}}">{{truncateString(record.ngayDeXuat)| date:'dd-MMM-yyyy'}}</span>
+                                            </td>
+
+                                            <td>
+                                                <span class="ui-column-title">Ngày sửa xong</span>
+                                                <span
+                                                    title="{{record.ngaySuaXong| date:'dd-MMM-yyyy'}}">{{truncateString(record.ngaySuaXong | date:'dd-MMM-yyyy')}}</span>
+                                            </td>
+
+
+
+                                            <td>
+                                                <span class="ui-column-title">Mã tài sản</span>
+                                                <span
+                                                    title="{{record.maTaiSan}}">{{truncateString(record.maTaiSan)}}</span>
+                                            </td>
+
+
+                                            <td>
+                                                <span class="ui-column-title">Tên tài sản</span>
+                                                <span
+                                                    title="{{record.tenTaiSan}}">{{truncateString(record.tenTaiSan)}}</span>
+                                            </td>
+                                            <td>
+                                                <span class="ui-column-title">Người đề xuất</span>
+                                                <span
+                                                    title="{{record.nguoiDeXuat}}">{{truncateString(record.nguoiDeXuat)}}</span>
+                                            </td>
+                                            <td>
+                                                <span class="ui-column-title">Nhân viên phụ trách</span>
+                                                <span
+                                                    title="{{record.nhanVienPhuTrach}}">{{truncateString(record.nhanVienPhuTrach)}}</span>
+                                            </td>
+                                            <td>
+                                                <span class="ui-column-title">Trạng Thái</span>
+                                                <span
+                                                    title="{{record.trangThaiSuaChua}}">{{truncateString(record.trangThaiSuaChua)}}</span>
+                                            </td>
+
+                                            <td>
+                                                <button type="button" class="btn btn-default"
+                                                    (click)="InitTabActive(record.id)">{{l('Duyệt')}}
+                                                </button>
+                                            </td>
+
+                                            <td>
+                                                <button
+                                                    class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                                    (click)="InitTabUpdate(record.id)" title="{{l('Edit')}}">
+                                                    <i class="fa fa-edit" [attr.aria-label]="l('Edit')"></i>
+                                                </button>
+
+                                                <button
+                                                    class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                                    (click)="deleteSuaChuaBatDongSan(record.id)"
+                                                    title="{{l('Delete')}}">
+                                                    <i class="fa fa-times" [attr.aria-label]="l('Delete')"></i>
+                                                </button>
+
+                                                <button
+                                                    class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                                    (click)="InitTabView(record.id)" title="{{l('View')}}">
+                                                    <i class="fa fa-eye" [attr.aria-label]="l('View')"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                                <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                    {{l('NoData')}}
+                                </div>
+                                <div class="primeng-paging-container">
+                                    <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}" #paginator
+                                        (onPageChange)="getSuaChuaBatDongSans($event)"
+                                        [totalRecords]="primengTableHelper.totalRecordsCount"
+                                        [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                    </p-paginator>
+                                    <span class="total-records-count">
+                                        {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                                    </span>
+                                </div>
+                            </div>
+                            <!--<Primeng-TurboTable-End>-->
+                        </div>
+                    </tab>
+                    <!-- 
+                        Tab Create
+
+
+                     -->
+                    <tab customClass="m-tabs__item" (select)="InitTabCreate()" [active]='activeTabCreate'>
+                        <ng-template tabHeading>
+                            <button class="btn btn-default" type="submit" tabindex="1">
+                                <i class="fa fa-plus"></i> {{l('Phiếu đề xuất')}}
+                            </button>
+                        </ng-template>
+                        <createOrEditSuaChuaBatDongSanModal *ngIf="!activeTabCreate" #createOrEditModal
+                            (modalSave)="SaveNew()">
+                        </createOrEditSuaChuaBatDongSanModal>
+                        <button type="button" class="btn btn-default" (click)="SaveNew()">{{l("Save")}}</button>
+
+                    </tab>
+
+                    <!-- 
+                        Tab Update
+                        Tab Update
+                     -->
+                    <tab customClass="m-tabs__item" [disabled]="GetDisableTabUpdate()" [active]='activeTabUpdate'>
+                        <ng-template tabHeading>
+                            <button class="btn btn-default" type="submit" tabindex="2"
+                                [disabled]="GetDisableTabUpdate()">
+                                <i class="fa fa-edit"></i> {{l('Cập nhật')}}
+                            </button>
+                        </ng-template>
+                        <EditSuaChuaBatDongSanModal #EditModal (modalSave)="SaveNew()"> </EditSuaChuaBatDongSanModal>
+                    </tab>
+
+                    <!-- 
+                        Tab View
+                        Tab View
+                     -->
+                    <tab customClass="m-tabs__item" [disabled]="GetDisableTabView()" [active]='activeTabView'>
+                        <ng-template tabHeading>
+                            <button class="btn btn-default" type="submit" tabindex="3" [disabled]="GetDisableTabView()">
+                                <i class="fa fa-eye"></i> {{l('View')}}
+                            </button>
+                        </ng-template>
+                        <viewSuaChuaBatDongSanModal #viewSuaChuaBatDongSanModal></viewSuaChuaBatDongSanModal>
+                    </tab>
+
+
+                    <!-- 
+                        Tab setActive
+                        Tab setActive
+                     -->
+                    <tab customClass="m-tabs__item" [disabled]="GetDisableTabActive()" [active]='activeTabSetActive'>
+                        <ng-template tabHeading>
+                            <button class="btn btn-default" type="submit" tabindex="4"
+                                [disabled]="GetDisableTabActive()">
+                                <i class="fa fa-eye"></i> {{l('Duyệt')}}
+                            </button>
+                        </ng-template>
+                        <DuyetSuaChuaBatDongSanModal #DuyetModal (modalSave)="SaveNew()"></DuyetSuaChuaBatDongSanModal>
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+    </div>
+
+    <selectTaiSanModal #selectTaiSanModel (modalSave)="updateTaiSan()"></selectTaiSanModal>
+
+
+
+</div>

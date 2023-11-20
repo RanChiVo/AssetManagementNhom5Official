@@ -1,0 +1,106 @@
+<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewModal"
+    aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span *ngIf="computer.id">{{l("Editcomputer")}}: {{computer.cpuname}}</span>
+                    <span *ngIf="!computer.id">{{l("CreateNewComputer")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Domain</label>
+                    <p>{{computer.domain1}}</p>
+                </div>
+                <div class="form-group">
+                    <label>DNSHostName</label>
+                    <p>{{computer.dnsHostName}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Cpuname</label>
+                    <p>{{computer.cpuname}}</p>
+                </div>
+
+                <div class="form-group">
+                    <label>Manufacturer</label>
+                    <p>{{computer.manufacturer}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Model</label>
+                    <p>{{computer.model}}</p>
+                </div>
+                <div class="form-group">
+                    <label>UserName</label>
+                    <p>{{computer.userName}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Ram1Manufacturer</label>
+                    <p>{{computer.ram1Manufacturer}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Ram1PartNumber</label>
+                    <p>{{computer.ram1PartNumber}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Ram1Total</label>
+                    <p>{{computer.ram1Total}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Ram2Manufacturer</label>
+                    <p>{{computer.ram2Manufacturer}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Ram2PartNumber</label>
+                    <p>{{computer.ram2PartNumber}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Ram2Total</label>
+                    <p>{{computer.ram2Total}}</p>
+                </div>
+                <div class="form-group">
+                    <label>MonitorType</label>
+                    <p>{{computer.monitorType}}</p>
+                </div>
+                <div class="form-group">
+                    <label>HDD1Type</label>
+                    <p>{{computer.hdD1Type}}</p>
+                </div>
+                <div class="form-group">
+                    <label>HDD1Size</label>
+                    <p>{{computer.hdD1Size}}</p>
+                </div>
+                <div class="form-group">
+                    <label>HDD2Type</label>
+                    <p>{{computer.hdD2Type}}</p>
+                </div>
+                <div class="form-group">
+                    <label>HDD2Size</label>
+                    <p>{{computer.hdD2Size}}</p>
+                </div>
+                <div class="form-group">
+                    <label>OS</label>
+                    <p>{{computer.os}}</p>
+                </div>
+                <div class="form-group">
+                    <label>OSA</label>
+                    <p>{{computer.osa}}</p>
+                </div>
+                <div class="form-group">
+                    <label>LocalIp</label>
+                    <p>{{computer.localIp}}</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-default"
+                    (click)="close()">{{l("Cancel")}}</button>
+                <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                    [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                    <span>{{l("Save")}}</span></button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,93 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="construction.id">Cập nhật công trình: {{construction.tenCongTrinh}}</span>
+                        <span *ngIf="!construction.id">Tạo mới công trình</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Mã công trình</label>
+                        <input #maCongTrinhInput="ngModel" class="form-control" type="text" name="maCongTrinh"
+                               [(ngModel)]="construction.maCongTrinh" required maxlength="64">
+                        <validation-messages [formCtrl]="maCongTrinhInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Tên công trình</label>
+                        <input #tenCongTrinhInput="ngModel" class="form-control" type="text" name="tenCongTrinh"
+                               [(ngModel)]="construction.tenCongTrinh" required maxlength="64">
+                        <validation-messages [formCtrl]="tenCongTrinhInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Địa chỉ công trình</label>
+                        <input #diaChiCongTrinhInput="ngModel" class="form-control" type="text" name="diaChiCongTrinh"
+                               [(ngModel)]="construction.diaChiCongTrinh" required maxlength="64">
+                        <validation-messages [formCtrl]="diaChiCongTrinhInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Loại công trình</label>
+                        <select *ngIf="!construction.id" #constructionCombobox name="maLoaiCongTrinh" class="form-control"
+                                title="---Chọn loại bất động sản---"  [(ngModel)]="construction.maLoaiCongTrinh"
+                                required>
+                                <option selected disabled value="">Chọn loại công trình</option>
+                                <option [value]="">Sửa chữa</option>
+                                <option [value]="">Xây mới</option>
+                                <option [value]="">Loại khác</option>
+                            </select>
+                            <validation-messages [formCtrl]="maLoaiCongTrinhInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Mã kế hoạch</label>
+                        <input #maKeHoachInput="ngModel" class="form-control" type="text" name="maKeHoach"
+                               [(ngModel)]="construction.maKeHoach" required maxlength="64" readonly>
+                        <validation-messages [formCtrl]="maKeHoachInput"></validation-messages>
+                        <button (click)="planShow()" class="btn btn-primary" type="button">...</button>
+                    </div>
+                    <div class="form-group">
+                        <label>Diện tích công trình</label>
+                        <input #dienTichCongTrinhInput="ngModel" class="form-control" type="text" name="dienTichCongTrinh"
+                               [(ngModel)]="construction.dienTichCongTrinh" required maxlength="64">
+                        <validation-messages [formCtrl]="dienTichCongTrinhInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Chi phí công trình</label>
+                        <input #chiPhiCongTrinhInput="ngModel" class="form-control" type="text" name="chiPhiCongTrinh"
+                               [(ngModel)]="construction.chiPhiDeXuat" required maxlength="64">
+                        <validation-messages [formCtrl]="chiPhiCongTrinhInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày dự kiến thực hiện</label>
+                        <input #ngayDuKienThucHienInput="ngModel" class="form-control" type="date" name="ngayDuKienThucHien"
+                               [(ngModel)]="construction.ngayDuKienThucHien" required maxlength="64">
+                        <validation-messages [formCtrl]="ngayDuKienThucHienInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Mô tả công trình*</label>
+                        <input #moTaCongTrinhInput="ngModel" class="form-control" type="text" name="moTaCongTrinh"
+                               [(ngModel)]=" construction.moTaCongTrinh" required maxlength="64">
+                        <validation-messages [formCtrl]="moTaCongTrinhInput"></validation-messages>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                            (click)="close()">
+                        {{l("Cancel")}}
+                    </button>
+                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                            [busyText]="l('SavingWithThreeDot')" [disabled]="!editForm.form.valid">
+                        <i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>   
+    <selectPlanModal #selectPlanModal (modalSave)="reloadPlan()"></selectPlanModal>
+</div>

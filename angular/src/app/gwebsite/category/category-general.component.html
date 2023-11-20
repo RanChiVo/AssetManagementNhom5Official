@@ -1,0 +1,250 @@
+<div [@routerTransition]>
+
+    <div class="m-subheader ">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto col-xs-6">
+                <h3 class="m-subheader__title m-subheader__title--separator">
+                    <span>{{l("Categories List")}}</span>
+                </h3>
+                <span class="m-section__sub">
+                    {{l("Manage general categories")}}
+                </span>
+            </div>
+            <div class="row margin-bottom-10">
+                <div class="col-sm-12 text-right">
+                    <button (click)="createCategory()" *ngIf="isGranted('Pages.Categories.General.Create')"
+                        class="btn btn-primary"><i class="fa fa-plus"></i>
+                        {{l("Create")}}
+                    </button>
+                    <button type="button" class="btn btn-success" (click)="exportToExcelCategories()"><i
+                            class="fa fa-file-excel-o"></i>
+                        {{l("ExportToExcel")}}
+                    </button>
+                    <button (click)="applyCategoryFilters()" name="RefreshButton" class="btn btn-basic"><i
+                            class="fa fa-refresh"></i>
+                        {{l('Refresh')}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <div class="m-form m-form--label-align-right">
+                    <form class="horizontal-form" #categoryFilterForm="ngForm" (ngSubmit)="getCategories()">
+                        <div class="row align-items-center m--margin-bottom-10">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="filters.filterType" class="control-label">{{l("Type")}}</label>
+                                    <select #typeCombobox [(ngModel)]="filters.filterType" name="filterType"
+                                        class="form-control" type="text">
+                                        <option value="null">All types</option>
+                                        <option *ngFor="let type of listItems" [value]=type.name>
+                                            {{type.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="filters.filterStatus" class="control-label">{{l("Status")}}</label>
+                                    <select class="form-control" [(ngModel)]="filters.filterStatus"
+                                        type="text" name="filterStatus">
+                                        <option value="null">All status</option>
+                                        <option>Active</option>
+                                        <option>Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="advancedFiltersAreShown" class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="filters.filterId" class="control-label">{{l("ID")}}</label>
+                                    <input [(ngModel)]="filters.filterId" name="filterId" autoFocus class="form-control" type="text">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="filters.filterName" class="control-label">{{l("Name")}}</label>
+                                    <input [(ngModel)]="filters.filterName" name="filterName" autoFocus class="form-control" type="text">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="filters.filterSymbol" class="control-label">{{l("Symbol")}}</label>
+                                    <input [(ngModel)]="filters.filterSymbol" name="filterSymbol" autoFocus class="form-control" type="text">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="filters.filterDescription" class="control-label">{{l("Description")}}</label>
+                                    <input [(ngModel)]="filters.filterDescription" name="filterDescription" autoFocus
+                                        class="form-control" type="text">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="StartEndCreatedDate" class="control-label">{{l("Created Date")}}</label>
+                                    <label><input id="StartEndCreatedDate" type="checkbox"
+                                            [(checked)]="filters.isCreatedCheckedAll"
+                                            (click)="this.onClickIsCreatedDateCheckedAll()">All</label>
+                                    <date-range-picker *ngIf="!filters.isCreatedCheckedAll"
+                                        [(startDate)]="filters.startCreatedDate"
+                                        [(endDate)]="filters.endCreatedDate"></date-range-picker>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="filters.createdBy" class="control-label">{{l("Created By")}}</label>
+                                    <input [(ngModel)]="filters.createdBy" name="filterCreatedBy" autoFocus
+                                        class="form-control" type="text">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="StartEndUpdatedDate" class="control-label">{{l("Updated Date")}}</label>
+                                    <label><input id="StartEndUpdatedDate" type="checkbox"
+                                            [(checked)]="filters.isUpdatedCheckedAll"
+                                            (click)="this.onClickIsUpdatedDateCheckedAll()">All</label>
+                                    <date-range-picker *ngIf="!filters.isUpdatedCheckedAll"
+                                        [(startDate)]="filters.startUpdatedDate"
+                                        [(endDate)]="filters.endUpdatedDate"></date-range-picker>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="filters.updatedBy" class="control-label">{{l("Updated By")}}</label>
+                                    <input [(ngModel)]="filters.updatedBy" name="filterUpdatedBy" autoFocus
+                                        class="form-control" type="text">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m--margin-bottom-10">
+                            <div class="col-sm-6">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                                <span><button type="button" class="btn btn-link" (click)="this.clearFilters()">Clear Filters</button></span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container"
+                        [busyIf]="primengTableHelperCategories.isLoading">
+                        <p-table #categoryTable (onLazyLoad)="getCategories($event)"
+                            [value]="primengTableHelperCategories.records"
+                            rows="{{primengTableHelperCategories.defaultRecordsCountPerPage}}"
+                            [paginator]="false" [lazy]="true"
+                            [responsive]="primengTableHelperCategories.isResponsive">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th pSortableColumn="categoryType">
+                                        {{l('Type')}}
+                                        <p-sortIcon field="categoryType"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="categoryId">
+                                        {{l('ID')}}
+                                        <p-sortIcon field="categoryId"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="name">
+                                        {{l('Name')}}
+                                        <p-sortIcon field="name"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="symbol">
+                                        {{l('Symbol')}}
+                                        <p-sortIcon field="symbol"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 300px">
+                                        {{l('Description')}}
+                                    </th>
+                                    <th>
+                                        {{l('Status')}}
+                                    </th>
+                                    <th>
+                                        {{l('Action')}}
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td>
+                                        <span class="ui-column-title">{{l('Type')}}</span>
+                                        <span
+                                            title="{{record.categoryType}}">{{record.categoryType}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">{{l('ID')}}</span>
+                                        <span title="{{record.categoryId}}">{{record.categoryId}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">{{l('Name')}}</span>
+                                        <span title="{{record.name}}">{{record.name}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">{{l('Symbol')}}</span>
+                                        <span *ngIf="record.symbol" title="{{record.symbol}}">{{ record.symbol }}</span>
+                                        <span *ngIf="!record.symbol" title="{{record.symbol}}">{{l('-')}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">{{l('Description')}}</span>
+                                        <span *ngIf="record.description" title="{{record.description}}">{{record.description}}</span>
+                                        <span *ngIf="!record.description" title="{{record.description}}">{{l('-')}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">{{l('Status')}}</span>
+                                        <span *ngIf="record.status == true">{{l('Active')}}</span>
+                                        <span *ngIf="record.status == false">{{l('Inactive')}}</span>
+                                    </td>
+                                    <td>
+                                        <button
+                                            class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                            title="{{l('View')}}" (click)="viewCategory(record.id)">
+                                            <i class="fa fa-eye" [attr.aria-label]="l('View')"></i>
+                                        </button>
+                                        <button *ngIf="isGranted('Pages.Categories.General.Edit')"
+                                            class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                            title="{{l('Edit')}}" (click)="editCategory(record.id)">
+                                            <i class="fa fa-edit" [attr.aria-label]="l('Edit')"></i>
+                                        </button>
+                                        <button *ngIf="isGranted('Pages.Categories.General.Delete')"
+                                            class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                            title="{{l('Delete')}}" (click)="deleteCategory(record.id)">
+                                            <i class="fa fa-times" [attr.aria-label]="l('Delete')"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data"
+                            *ngIf="primengTableHelperCategories.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                rows="{{primengTableHelperCategories.defaultRecordsCountPerPage}}"
+                                #paginatorCategory (onPageChange)="getCategories($event)"
+                                [totalRecords]="primengTableHelperCategories.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelperCategories.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelperCategories.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <createOrEditCategoryModal #createOrEditCategoryModal (modalSave)="refreshValueFromCategoryModal()"></createOrEditCategoryModal>
+    <viewCategoryModal #viewCategoryModal></viewCategoryModal>
+</div>

@@ -1,0 +1,118 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            <span *ngIf="nhaCungCapHangHoa.id">Cập nhật nhà cung cấp hàng hóa: {{nhaCungCapHangHoa.id}}</span>
+                            <span *ngIf="!nhaCungCapHangHoa.id">Tạo mới nhà cung cấp hàng hóa</span>
+                        </h4>
+                        <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!--Khúc này tạo ra cái bảng để thêm mới nhà cung cấp khách hàng dô
+                        mỗi cái thẻ div là tao một dòng để ghi dữ liệu dô xong rầu lấy dữ liệu
+                        ép vào nhaCungCapHangHoa
+                        lưu ý: mỗi thuộc tính bên angular chữ đầu viết thường bên asp viết sao không quan tấm
+                        -->
+                        <div class="form-group">
+                            <label>Mã nhà cung cấp *</label>
+                            <input #maNhaCungCapInput="ngModel" class="form-control" type="text" name="MaNhaCungCap"
+                                [(ngModel)]="nhaCungCapHangHoa.maNhaCungCap" required maxlength="64">
+                            <validation-messages [formCtrl]="maNhaCungCapInput"></validation-messages>
+                        </div>
+                        <div class="form-group">
+                            <label>Tên nhà cung cấp *</label>
+                            <input #tenNhaCungCapInput="ngModel" class="form-control" type="text" name="TenNhaCungCap"
+                                [(ngModel)]="nhaCungCapHangHoa.tenNhaCungCap" required maxlength="64">
+                            <validation-messages [formCtrl]="tenNhaCungCapInput"></validation-messages>
+                        </div>
+                   <!--Khúc này code để tạo combobox để đổ dữ liệu loại nhà cung cấp hàng hóa từ sql dô
+                chỉ cho chọn không cho ghi mới-->
+                     <!--   <div class="form-group">
+                                <label>Loại Nhà Cung Cấp *</label>
+                                <select #loaiNhaCungCapCombobox name="LoaiNhaCungCap" class="form-control" [(ngModel)]="nhaCungCapHangHoa.maLoaiNhaCungCap"
+                                        [attr.data-live-search]="true" jq-plugin="selectpicker" required>
+                                    <option selected disabled value="">Chọn Loại Nhà Cung Cấp</option>
+                                    <option [value]="">Loại 1</option>
+                                    <option [value]="">Loại 2</option>
+                                    <option [value]="">Loại 3</option>
+                                </select>
+                            </div>-->
+                            <!--Tạo một combobox để đổ dữ liệu từ sql LoaiNhaCungCaps vào trong combobox dùng mã nhà cung cấp để chon mã loại nhà cung cấp => Hiển thị 
+                            ra combobox tên loại nhà cung cấp
+                        Viết thêm api Cho NhaCungCapHangHoa, Viết thêm file output cho LoaiNhaCungCap 
+                    chay lại file để cho angular có thể thêm servier  -->
+                           <!-- <div class="form-group">
+                                <label>Loại Nhà Cung Cấp *</label>
+                                <select #loaiNhaCungCapCombobox name="LoaiNhaCungCap" class="form-control" [(ngModel)]="nhaCungCapHangHoa.maLoaiNhaCungCap"
+                                        [attr.data-live-search]="true" jq-plugin="selectpicker" required>
+                                    <option selected disabled value=""> Loại Nhà Cung Cấp </option>
+                                    <option *ngFor="let item of loaiNhaCungCaps" [value]="item.value">{{item.displayText}}</option>
+                                </select>
+                            </div>-->
+            <!--Lỗi chưa đổ đc dữ liệu từ sql vào combobox Loại nhà cung cấp hàng hóa 
+đang fix -->
+                        <div class="form-group">
+                            <label>Loại Nhà Cung Cấp Hàng Hóa*</label>
+                            <select #loaiNhaCungCapCombobox name="LoaiNhaCungCap" class="form-control"
+                                [(ngModel)]="selectedType" title="Select type..." (change)="this.onChangeType()"
+                                required>
+                                <option *ngFor="let item of loaiNhaCungCaps" [value]="item.id">{{item.tenLoaiNhaCungCap}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                             <label>Địa chỉ *</label>
+                            <input #diaChiInput="ngModel" class="form-control" type="text" name="DiaChi"
+                                [(ngModel)]="nhaCungCapHangHoa.diaChi" required maxlength="64">
+                            <validation-messages [formCtrl]="diaChiInput"></validation-messages>
+                        </div>
+                        <div class="form-group">
+                            <label>Email *</label>
+                            <input #emailInput="ngModel" class="form-control" type="text" name="Email"
+                                [(ngModel)]="nhaCungCapHangHoa.email" required maxlength="64">
+                            <validation-messages [formCtrl]="emailInput"></validation-messages>
+                        </div>
+                        <div class="form-group">
+                            <label>Số Điện Thoại *</label>
+                            <input #soDienThoaiInput="ngModel" class="form-control" type="text" name="SoDienThoai"
+                                [(ngModel)]="nhaCungCapHangHoa.soDienThoai" required maxlength="64">
+                            <validation-messages [formCtrl]="soDienThoaiInput"></validation-messages>
+                        </div>
+                        <div class="form-group">
+                            <label>Người Liên Hệ *</label>
+                            <input #nguoiLienHeInput="ngModel" class="form-control" type="text" name="NguoiLienHe"
+                                [(ngModel)]="nhaCungCapHangHoa.nguoiLienHe" required maxlength="64">
+                            <validation-messages [formCtrl]="nguoiLienHeInput"></validation-messages>
+                        </div>
+                        <div class="form-group">
+                            <label>Hoạt Động *</label>
+                            <select #loaiNhaCungCapCombobox name="LoaiNhaCungCap" class="form-control" [(ngModel)]="nhaCungCapHangHoa.hoatDong"
+                                    [attr.data-live-search]="true" jq-plugin="selectpicker" required>
+                                    <option [value]="">true</option>
+                                    <option [value]="">flase</option>
+                                    
+                                </select>
+                                <option selected disabled value="">Hoạt Động</option>
+                        </div>-->
+                        <div class="form-group">
+                            <label>Ghi chú *</label>
+                            <input #hoatDongInput="ngModel" class="form-control" type="text" name="GhiChu"
+                                [(ngModel)]="nhaCungCapHangHoa.ghiChu" required maxlength="64">
+                            <validation-messages [formCtrl]="ghiChuInput"></validation-messages>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving" type="button" class="btn btn-default"
+                            (click)="close()">{{l("Hủy Bỏ")}}</button>
+                        <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                            [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                            <span>{{l("Lưu")}}</span></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>

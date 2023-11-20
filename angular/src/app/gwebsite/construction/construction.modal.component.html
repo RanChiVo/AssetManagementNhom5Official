@@ -1,0 +1,109 @@
+<div bsModal #createOrEdit1ConstructionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="createOrEdit1ConstructionModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="construction.id">Cập nhật công trình: {{construction.tenCongTrinh}}</span>
+                        <span *ngIf="!construction.id">Tạo mới công trình</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row m--margin-bottom-10">
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <label>Mã công trình</label>
+                                <input #maCongTrinhInput="ngModel" class="form-control" type="text" name="maCongTrinh"
+                                       [(ngModel)]="construction.maCongTrinh" required maxlength="64">
+                                <validation-messages [formCtrl]="maCongTrinhInput"></validation-messages>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <label>Tên công trình</label>
+                                <input #tenCongTrinhInput="ngModel" class="form-control" type="text" name="tenCongTrinh"
+                                       [(ngModel)]="construction.tenCongTrinh" required maxlength="64">
+                                <validation-messages [formCtrl]="tenCongTrinhInput"></validation-messages>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m--margin-bottom-10">
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <label>Dự kiến xây dựng</label>
+                                <input #ngayDuKienThucHienInput="ngModel" class="form-control" type="date" name="ngayDuKienThucHien"
+                                       [(ngModel)]="construction.ngayDuKienThucHien" required maxlength="64">
+                                <validation-messages [formCtrl]="ngayDuKienThucHienInput"></validation-messages>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <label>Dự kiến hoàn thành</label>
+                                <input #thoiGianDuKienHTInput="ngModel" class="form-control" type="date" name="thoiGianDuKienHT"
+                                       [(ngModel)]="construction.thoiGianDuKienHT" required maxlength="64">
+                                <validation-messages [formCtrl]="thoiGianDuKienHTInput"></validation-messages>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m--margin-bottom-10">
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <label>Thời gian thực hiện</label>
+                                <input #ngayThucThiThucTeInput="ngModel" class="form-control" type="date" name="ngayThucThiThucTe"
+                                       [(ngModel)]="construction.ngayThucThiThucTe" required maxlength="64">
+                                <validation-messages [formCtrl]="ngayThucThiThucTeInput"></validation-messages>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <label>Kinh phí đề xuất</label>
+                                <input #dienTichCongTrinhInput="ngModel" class="form-control" type="text" name="dienTichCongTrinh"
+                                       [(ngModel)]="construction.chiPhiDeXuat" required maxlength="64">
+                                <validation-messages [formCtrl]="dienTichCongTrinhInput"></validation-messages>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m--margin-bottom-10">
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <label>Kinh phí trình</label>
+                                <input #chiPhiTrinhInput="ngModel" class="form-control" type="text" name="chiPhiTrinh"
+                                       [(ngModel)]="construction.chiPhiTrinh" required maxlength="64">
+                                <validation-messages [formCtrl]="chiPhiTrinhInput"></validation-messages>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <label>Kinh phí được duyệt</label>
+                                <input #chiPhiDuocDuyetInput="ngModel" class="form-control" type="text" name="chiPhiDuocDuyet"
+                                       [(ngModel)]="construction.chiPhiDuocDuyet" required maxlength="64">
+                                <validation-messages [formCtrl]="chiPhiDuocDuyetInput"></validation-messages>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Ghi chú</label>
+                        <input #chiPhiCongTrinhInput="ngModel" class="form-control" type="text" name="chiPhiCongTrinh"
+                               [(ngModel)]="construction.chiPhiCongTrinh" required maxlength="64">
+                        <validation-messages [formCtrl]="chiPhiCongTrinhInput"></validation-messages>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                            (click)="close()">
+                        {{l("Cancel")}}
+                    </button>
+                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                            [busyText]="l('SavingWithThreeDot')">
+                        <i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

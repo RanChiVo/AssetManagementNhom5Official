@@ -1,0 +1,105 @@
+<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewModal"
+    aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span *ngIf="batdongsan.id">{{l("EditBatDongSan")}}: {{batdongsan.maBatDongSan}}</span>
+                    <span *ngIf="!batdongsan.id">{{l("CreateNewBatDongSan")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="m-portlet m-portlet--mobile">
+                    <div class="form-group">
+                        <label style="color: royalblue">Mã Bất động sản:</label>
+                        <p>{{batdongsan.maBatDongSan}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Mã tài sản:</label>
+                    <p>{{batdongsan.maTaiSan}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Phòng giao dịch:</label>
+                    <p>{{batdongsan.maPhongGiaoDich}}</p>
+                </div>
+   
+                <div class="form-group">
+                    <label>Địa chỉ:</label>
+                    <p>{{batdongsan.diaChi}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Hiện trạng bất động sản:</label>
+                    <p>{{batdongsan.hienTrangBDS}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Loại bất động sản:</label>
+                    <p>{{batdongsan.maLoaiBDS}}</p>
+                </div>
+
+                <div class="form-group">
+                    <label>Chiều dài:</label>
+                    <p>{{batdongsan.chieuDai}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Chiều rộng:</label>
+                    <p>{{batdongsan.chieuRong}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Diện tích đất nền:</label>
+                    <p>{{batdongsan.dienTichDatNen}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Diện tích xây dựng:</label>
+                    <p>{{batdongsan.dienTichXayDung}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Tình trạng sử dụng đất:</label>
+                    <p>{{batdongsan.maTinhTrangSuDungDat}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Công năng sử dụng:</label>
+                    <p>{{batdongsan.congNangSuDung}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Kết cấu nhà:</label>
+                    <p>{{batdongsan.ketCauNha}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Ranh giới:</label>
+                    <p>{{batdongsan.ranhGioi}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Hiện trạng pháp lý:</label>
+                    <p>{{batdongsan.maHienTrangPhapLy}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Loại sở hữu:</label>
+                    <p>{{batdongsan.maLoaiSoHuu}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Chủ sở hữu:</label>
+                    <p>{{batdongsan.chuSoHuu}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Ghi chú:</label>
+                    <p>{{batdongsan.ghiChu}}</p>
+                </div>
+                <div class="form-group">
+                    <label>File đính kèm:</label>
+                    <p>{{batdongsan.fileDinhKem}}</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-default"
+                    (click)="close()">{{l("Cancel")}}</button>
+                <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                    [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                    <span>{{l("Save")}}</span></button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,131 @@
+<div [@routerTransition]>
+    <div class="m-subheader ">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto col-xs-6">
+                <h3 class="m-subheader__title m-subheader__title--separator">
+                    <span>{{l("Create New Exporting Used Asset")}}</span>
+                </h3>
+            </div>
+            <div class="col-xs-6 text-right">
+                <button class="btn btn-primary" [routerLink]="['/app/gwebsite/exporting-used-asset']">
+                    <i class="fa fa-list"></i> {{l("Back To Exporting Used Asset List")}}
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form #createForm="ngForm" role="form" novalidate (ngSubmit)="save()">
+                    <div class="m-form m-form--label-align-right " id="TextsFilterForm">
+                        <div class="row align-items-center m--margin-bottom-10 ">
+                            <div class="col-sm-12">
+                                <div class="input-group">
+
+                                    <div class="col-xl-12 m--margin-top-10 ">
+                                        <label>Ngày xuất *</label> <br>
+                                        <span *ngIf=" !exportingUsedAsset.id">  {{ exportingUsedAsset.exportingDay ? (exportingUsedAsset.exportingDay | momentFormat:'L') : '-'}}</span> 
+                                        <span *ngIf="exportingUsedAsset.id">
+                                            {{exportingUsedAsset.exportingDay ? (exportingUsedAsset.exportingDay | momentFormat:'L') : '-' }}
+                                        </span>
+                                    </div>
+
+                                    <div class="col-xl-6 m--margin-top-10 ">
+                                        <label>Mã tài sản *</label>
+
+                                        <div class="input-group">
+                                            <input #assetIdInput="ngModel" class="form-control" type="text" name="AssetId"
+                                                   [(ngModel)]="assetId" required maxlength="64" readonly>
+
+                                            <span class="input-group-btn">
+                                                <button (click)="searchAsset.showModal()" class="btn btn-primary" type="button">
+                                                    {{l("Assets List")}}
+                                                </button>
+                                            </span>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-6 m--margin-top-10">
+                                        <label>Tên tài sản</label>
+                                        <input [(ngModel)]="selectedAsset.name" name="name11" class="form-control" type="text" readonly>
+                                    </div>
+
+                                    <div class="col-xl-6 m--margin-top-10">
+                                        <label>Loại tài sản</label>
+                                        <input [(ngModel)]="assetType" name="type11" class="form-control" type="text" readonly>
+                                    </div>
+
+                                    <div class="col-xl-6 m--margin-top-10">
+                                        <label>Thông tin mô tả</label>
+                                        <input [(ngModel)]="selectedAsset.description" name="description11" class="form-control" type="text" readonly>
+                                    </div>
+
+                                    <div class="col-xl-12 m--margin-top-10 ">
+                                        <label>Ngày bắt đầu khấu hao</label>
+                                        <input type="datetime" #TransferringDateUtc name="trasnferringDate1" class="form-control">
+                                    </div>
+
+                                    <div class="col-xl-6 m--margin-top-10 ">
+                                        <label>Đơn vị sử dụng *</label>
+
+                                        <div class="input-group">
+                                            <input #usingUnitInput="ngModel" class="form-control" type="text" name="UsingUnit"
+                                                   [(ngModel)]="exportingUsedAsset.usingUnit" required maxlength="64" readonly>
+
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-primary" type="button" (click)="searchUnit.showModal()">
+                                                    {{l("Using Units List")}}
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-xl-6 m--margin-top-10 ">
+                                        <label>Người sử dụng *</label>
+
+                                        <div class="input-group">
+                                            <input #userInput="ngModel" class="form-control" type="text" name="User"
+                                                   [(ngModel)]="exportingUsedAsset.user" required maxlength="64" readonly>
+
+                                            <span class="input-group-btn" (click)="showSearchUserModal()">
+                                                <button class="btn btn-primary" type="button">
+                                                    {{l("Users List")}}
+                                                </button>
+                                            </span>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-xl-6 m--margin-top-10 ">
+                                        <label>Ghi chú *</label>
+                                        <input #noteInput="ngModel" class="form-control" type="text" name="Note"
+                                               [(ngModel)]="exportingUsedAsset.note" required maxlength="64">
+                                        <validation-messages [formCtrl]="noteInput"></validation-messages>
+                                    </div>
+
+                                    <div class="col-xl-6 m--margin-top-40-desktop m--margin-top-20-tablet-and-mobile" align="right">
+                                        <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fa fa-save"></i>
+                                            <span>{{l("Save")}}</span>
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- <searchAssetComponent (sendSelectedAssetIdEvent) = "notifyMessage($event)"></searchAssetComponent> -->
+    <searchAssetComponent2 #searchAsset
+                           (sendSelectedAssetIdEvent)="notifyMessage($event)"></searchAssetComponent2>
+    <searchUnitComponent #searchUnit (modalSave)="getUnit($event)"></searchUnitComponent>
+    <searchUserComponent #searchUser (modalSave)="getUser($event)" [assetUnitIdFromUnitForm]="receivingUnit"></searchUserComponent>
+</div>

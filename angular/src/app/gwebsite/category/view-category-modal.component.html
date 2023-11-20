@@ -1,0 +1,74 @@
+<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewModal"
+    aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <p>{{l("ID")}}: {{category.categoryId}}</p>
+                </h4>
+                <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Name</label>
+                    <h5><p>{{category.name}}</p></h5>
+                </div>
+                <div class="form-group">
+                    <label>Type</label>
+                    <h5><p>{{category.categoryType}}</p></h5>
+                </div>
+                <div class="form-group">
+                    <label>Symbol</label>
+                    <h5>
+                        <p *ngIf="category.symbol">{{category.symbol}}</p>
+                        <p *ngIf="!category.symbol">{{l("-")}}</p>
+                    </h5>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <h5>
+                        <p *ngIf="category.description">{{category.description}}</p>
+                        <p *ngIf="!category.description">{{l("-")}}</p>
+                    </h5>  
+                </div>
+                <div class="form-group">
+                    <label>Created Date</label>
+                    <h5>
+                        <p *ngIf="category.createdBy">{{category.createdDate | momentFormat:'DD-MM-YYYY HH:mm:ss'}}</p>
+                        <p *ngIf="!category.createdBy">{{l("-")}}</p>
+                    </h5>
+                </div>
+                <div class="form-group">
+                    <label>Created By</label>
+                    <h5>
+                        <p *ngIf="category.createdBy">{{category.createdBy}}</p>
+                        <p *ngIf="!category.createdBy">{{l("-")}}</p>
+                    </h5>
+                </div>
+                <div class="form-group">
+                    <label>Updated Date</label>
+                    <h5>
+                        <p *ngIf="category.updatedBy">{{category.updatedDate | momentFormat:'DD-MM-YYYY HH:mm:ss'}}</p>
+                        <p *ngIf="!category.updatedBy">{{l("-")}}</p>
+                    </h5>
+                </div>
+                <div class="form-group">
+                    <label>Updated By</label>
+                    <h5>
+                        <p *ngIf="category.updatedBy">{{category.updatedBy}}</p>
+                        <p *ngIf="!category.updatedBy">{{l("-")}}</p>
+                    </h5>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <h5>
+                        <p *ngIf="!category.isDelete">{{l("Active")}}</p>
+                        <p *ngIf="category.isDelete">{{l("Inactive")}}</p>
+                    </h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

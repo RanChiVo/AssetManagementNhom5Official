@@ -1,0 +1,138 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="computer.id">Cập nhật computer: {{computer.cpuname}}</span>
+                        <span *ngIf="!computer.id">Tạo mới computer</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Tên PC *</label>
+                        <input #nameInput="ngModel" class="form-control" type="text" name="Name"
+                            [(ngModel)]="computer.cpuname" required maxlength="64">
+                        <validation-messages [formCtrl]="nameInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Domain *</label>
+                        <input #domainInput="ngModel" class="form-control" type="text" name="Domain"
+                            [(ngModel)]="computer.domain1" required maxlength="64">
+                        <validation-messages [formCtrl]="domainInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>DNS Host Name *</label>
+                        <input #DnsHostNameInput="ngModel" class="form-control" type="text" name="Domain"
+                            [(ngModel)]="computer.dnsHostName" required maxlength="64">
+                        <validation-messages [formCtrl]="DnsHostNameInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Manufacturer *</label>
+                        <input #ManufacturerInput="ngModel" class="form-control" type="text" name="Domain"
+                            [(ngModel)]="computer.manufacturer" required maxlength="64">
+                        <validation-messages [formCtrl]="ManufacturerInput"></validation-messages>
+                    </div> <div class="form-group">
+                        <label>Model *</label>
+                        <input #ModelInput="ngModel" class="form-control" type="text" name="Domain"
+                            [(ngModel)]="computer.model" required maxlength="64">
+                        <validation-messages [formCtrl]="ModelInput"></validation-messages>
+                    </div> <div class="form-group">
+                        <label>UserName *</label>
+                        <input #UserNameInput="ngModel" class="form-control" type="text" name="Domain"
+                            [(ngModel)]="computer.userName" required maxlength="64">
+                        <validation-messages [formCtrl]="UserNameInput"></validation-messages>
+                    </div> <div class="form-group">
+                        <label>Ram1 Manufacturer *</label>
+                        <input #Ram1ManufacturerInput="ngModel" class="form-control" type="text" name="Domain"
+                            [(ngModel)]="computer.ram1Manufacturer" required maxlength="64">
+                        <validation-messages [formCtrl]="Ram1ManufacturerInput"></validation-messages>
+                    </div> <div class="form-group">
+                        <label>Ram1PartNumber *</label>
+                        <input #Ram1PartNumberInput="ngModel" class="form-control" type="text" name="Domain"
+                            [(ngModel)]="computer.ram1PartNumber" required maxlength="64">
+                        <validation-messages [formCtrl]="Ram1PartNumberInput"></validation-messages>
+                    </div> <div class="form-group">
+                        <label>Ram1 Part Number*</label>
+                        <input #Ram1PartNumberInput="ngModel" class="form-control" type="text" name="Domain"
+                            [(ngModel)]="computer.ram1PartNumber" required maxlength="64">
+                        <validation-messages [formCtrl]="Ram1PartNumberInput"></validation-messages>
+                    </div> <div class="form-group">
+                        <label>Ram1Total *</label>
+                        <input #Ram1TotalInput="ngModel" class="form-control" type="text" name="Domain"
+                            [(ngModel)]="computer.ram1Total" required maxlength="64">
+                        <validation-messages [formCtrl]="Ram1TotalInput"></validation-messages>
+                    </div> <div class="form-group">
+                        <label>Ram2Manufacturer *</label>
+                        <input #Ram2ManufacturerInput="ngModel" class="form-control" type="text" name="Domain"
+                            [(ngModel)]="computer.ram2Manufacturer" required maxlength="64">
+                        <validation-messages [formCtrl]="Ram2ManufacturerInput"></validation-messages>
+                    </div> <div class="form-group">
+                        <label>Ram2 Part Number *</label>
+                        <input #Ram2PartNumberInput="ngModel" class="form-control" type="text" name="Domain"
+                            [(ngModel)]="computer.ram2PartNumber" required maxlength="64">
+                        <validation-messages [formCtrl]="Ram2PartNumberInput"></validation-messages>
+                    </div> <div class="form-group">
+                        <label>Ram2 Total *</label>
+                        <input #Ram2TotalInput="ngModel" class="form-control" type="text" name="Domain"
+                            [(ngModel)]="computer.ram2Total" required maxlength="64">
+                        <validation-messages [formCtrl]="Ram2TotalInput"></validation-messages>
+                    </div> <div class="form-group">
+                        <label>MonitorType *</label>
+                        <input #MonitorTypeInput="ngModel" class="form-control" type="text" name="Domain"
+                            [(ngModel)]="computer.monitorType" required maxlength="64">
+                        <validation-messages [formCtrl]="MonitorTypeInput"></validation-messages>
+                    </div> <div class="form-group">
+                        <label>HDD1 Type *</label>
+                        <input #HDD1TypeInput="ngModel" class="form-control" type="text" name="Domain"
+                            [(ngModel)]="computer.hdD1Type" required maxlength="64">
+                        <validation-messages [formCtrl]="HDD1TypeInput"></validation-messages>
+                    </div> <div class="form-group">
+                        <label>HDD1 Size *</label>
+                        <input #HDD1SizeInput="ngModel" class="form-control" type="text" name="Domain"
+                            [(ngModel)]="computer.hdD1Size" required maxlength="64">
+                        <validation-messages [formCtrl]="HDD1SizeInput"></validation-messages>
+                    </div> <div class="form-group">
+                        <label>HDD2 Type *</label>
+                        <input #HDD2TypeInput="ngModel" class="form-control" type="text" name="Domain"
+                            [(ngModel)]="computer.hdD2Type" required maxlength="64">
+                        <validation-messages [formCtrl]="HDD2TypeInput"></validation-messages>
+                    </div> <div class="form-group">
+                        <label>HDD2 Size *</label>
+                        <input #HDD2SizeInput="ngModel" class="form-control" type="text" name="Domain"
+                            [(ngModel)]="computer.hdD2Size" required maxlength="64">
+                        <validation-messages [formCtrl]="HDD2SizeInput"></validation-messages>
+                    </div> <div class="form-group">
+                        <label>OS *</label>
+                        <input #OSInput="ngModel" class="form-control" type="text" name="Domain"
+                            [(ngModel)]="computer.os" required maxlength="64">
+                        <validation-messages [formCtrl]="OSInput"></validation-messages>
+                    </div> <div class="form-group">
+                        <label>OSA *</label>
+                        <input #OSAInput="ngModel" class="form-control" type="text" name="Domain"
+                            [(ngModel)]="computer.osa" required maxlength="64">
+                        <validation-messages [formCtrl]="OSAInput"></validation-messages>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Local IP *</label>
+                    <input #LocalIpInput="ngModel" class="form-control" type="text" name="Domain"
+                        [(ngModel)]="computer.localIp" required maxlength="64">
+                    <validation-messages [formCtrl]="LocalIpInput"></validation-messages>
+                </div>
+
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,177 @@
+<div [@routerTransition]>
+
+    <div class="m-subheader ">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto col-xs-6">
+                <h3 class="m-subheader__title m-subheader__title--separator">
+                    <span>{{l("Hiện trạng pháp lý")}}</span>
+                </h3>
+                <span class="m-section__sub">
+                    {{l("Thông tin chi tiết")}}
+                </span>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+
+            <div class="m-portlet m-portlet--mobile">
+                <div class="m-portlet__body">
+                    <tabset class="tab-container tabbable-line">
+                        <tab  customClass="m-tabs__item" (select)="initTabHienTrang()"
+                            [active]='activeTabHienTrang' >
+                            <ng-template tabHeading>
+                                <button class="btn btn-default" type="submit" tabindex="-1" autofocus>
+                                    <i class="fa fa-plus"></i> {{l('Hiện trạng')}}
+                                </button>
+                            </ng-template>
+                            <form autocomplete="off">
+                                <div class="m-form m-form--label-align-right" id="TextsFilterForm">
+                                    <div class="row align-items-center m--margin-bottom-10">
+                                        <div class="col-sm-12">
+                                            <div class="input-group">
+                                                <input [(ngModel)]="hientrangphaplyName" name="hientrangphaplyName"
+                                                    class="form-control" placeholder="Nhập tên loại" type="text">
+                                                <span class="input-group-btn">
+                                                    <button (click)="applyFilters()" class="btn btn-primary"
+                                                        type="submit"><i class="icon-refresh"></i>
+                                                        {{l("Refresh")}}</button>
+                                                    <button class="btn btn-primary" (click)="gotoTabCreate()"
+                                                        type="submit"><i class="icon-refresh"></i>
+                                                        {{l("Go To tab 2")}}</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="row align-items-center">
+                                <!--<Primeng-TurboTable-Start>-->
+                                <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                                    <p-table #dataTable (onLazyLoad)="getHienTrangPhapLys($event)"
+                                        [value]="primengTableHelper.records"
+                                        rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                        [lazy]="true" [responsive]="primengTableHelper.isResponsive">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+
+                                                <th pSortableColumn="name">
+                                                    Tên Hiện trạng pháp lý
+                                                    <p-sortIcon field="name"></p-sortIcon>
+                                                </th>
+
+                                                <th>{{l('Edit')}}</th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-record="$implicit">
+                                            <tr>
+
+                                                <td>
+                                                    <span class="ui-column-title">Tên Loại BĐS</span>
+                                                    <span title="{{record.name}}">{{truncateString(record.name)}}</span>
+                                                </td>
+
+                                                <td>
+                                                    <button
+                                                        class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                                        (click)="EditHT(record.id)" title="{{l('Edit')}}">
+                                                        <i class="fa fa-edit" [attr.aria-label]="l('Edit')"></i>
+                                                    </button>
+                                                    <button
+                                                        class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                                        (click)="deleteHienTrangPhapLy(record.id)"
+                                                        title="{{l('Delete')}}">
+                                                        <i class="fa fa-times" [attr.aria-label]="l('Delete')"></i>
+                                                    </button>
+                                                    <button
+                                                        class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                                        (click)="viewHienTrangPhapLyModal.show(record.id)"
+                                                        title="{{l('View')}}">
+                                                        <i class="fa fa-eye" [attr.aria-label]="l('View')"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                    <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                        {{l('NoData')}}
+                                    </div>
+                                    <div class="primeng-paging-container">
+                                        <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}" #paginator
+                                            (onPageChange)="getHienTrangPhapLys($event)"
+                                            [totalRecords]="primengTableHelper.totalRecordsCount"
+                                            [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                        </p-paginator>
+                                        <span class="total-records-count">
+                                            {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <!--<Primeng-TurboTable-End>-->
+                            </div>
+                        </tab>
+
+                        <!-- 
+                              Tab Create and Edit:
+                         -->
+                        <tab *ngIf="isGranted('Pages.Administration.QuanLyBatDongSan.HienTrangPhapLy.Create')"
+                            customClass="m-tabs__item" [active]='activeTabCreate' (select)="initTabCreate()"
+                            tabindex='0'>
+
+                            <!-- Vậy mà nó cũng hiểu :D -->
+                            <ng-template tabHeading>
+                                <button  class="btn btn-default" type="submit">
+                                    <i class="fa fa-plus"></i> {{l("Tạo mới")}}
+                                </button>
+                            </ng-template>
+                            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">
+                                        <span *ngIf="hientrangphaply.id">Cập nhật hiện trạng:
+                                            {{hientrangphaply.name}}</span>
+                                        <span *ngIf="!hientrangphaply.id">Tạo mới hiện trạng:</span>
+                                    </h4>
+                                    <button type="button" class="close" [attr.aria-label]="l('Close')">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label>Tên Hiện trạng *</label>
+                                        <input #nameInput="ngModel" class="form-control" type="text" name="Name"
+                                            [(ngModel)]="hientrangphaply.name" required maxlength="64">
+                                        <validation-messages [formCtrl]="nameInput"></validation-messages>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button [disabled]="saving" type="button"
+                                        class="btn btn-default">{{l("Cancel")}}</button>
+                                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                                        <span>{{l("Save")}}</span></button>
+                                </div>
+                            </form>
+                        </tab>
+
+                        <tab customClass="m-tabs__item">
+
+                            <!-- Vậy mà nó cũng hiểu :D -->
+                            <ng-template tabHeading>
+                                <button class="btn m-btn--hover-accent" type="submit">
+                                    <i class="fa fa-eye"></i> {{l("View")}}
+                                </button>
+                            </ng-template>
+                            <viewHienTrangPhapLyModal #viewHienTrangPhapLyModal></viewHienTrangPhapLyModal>
+                        </tab>
+                    </tabset>
+                </div>
+            </div>
+        </div>
+        <!-- <createOrEditHienTrangPhapLyModal #createOrEditModal (modalSave)="reloadPage()">
+        </createOrEditHienTrangPhapLyModal> -->
+
+    </div>
+</div>

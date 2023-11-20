@@ -1,0 +1,174 @@
+<div [@routerTransition]>
+
+    <div class="m-subheader ">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto col-xs-6">
+                <h3 class="m-subheader__title m-subheader__title--separator">
+                    <span>{{l("Create New Transferring Asset")}}</span>
+                </h3>
+                <span class="m-section__sub">
+                    {{l("Input Transferring Asset Info")}}
+                </span>
+            </div>
+            <div class="col-xs-6 text-right">
+                <button class="btn btn-primary" [routerLink]="['/app/gwebsite/transferring-asset']">
+                    <i class="fa fa-list"></i> {{l("Back To Transferring Asset List")}}
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form #createForm="ngForm" role="form" novalidate (ngSubmit)="save()">
+                    <div class="m-form m-form--label-align-right " id="TextsFilterForm">
+                        <div class="row align-items-center m--margin-bottom-10 ">
+                            <div class="col-sm-12">
+                                <div class="input-group">
+
+                                    <div class="col-xl-12 m--margin-top-10 ">
+                                        <label>Ngày điều chuyển</label>
+                                        <input type="datetime" #TransferringDateUtc name="trasnferringDate1" class="form-control">
+                                    </div>
+
+                                    <div class="col-xl-6 m--margin-top-10  ">
+                                        <label>Mã tài sản*</label>
+                                        <div class="input-group">
+                                            <input #assetIdInput="ngModel" class="form-control" type="text" name="AssetId1" [(ngModel)]="assetId" readonly>
+
+                                            <span class="input-group-btn  ">
+                                                <button (click)="searchAsset.showModal()" class="btn btn-primary" type="button">
+                                                    {{l("Asset List")}}
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-6 m--margin-top-10 ">
+                                        <label>Tên tài sản </label>
+                                        <input #assetNameInput="ngModel" class="form-control" type="text" name="AssetName1" [(ngModel)]="dataOutputForInput.assetName" readonly>
+                                    </div>
+
+                                    <div class="col-xl-6 m--margin-top-10 ">
+                                        <label>Loại tài sản </label>
+                                        <input #assetTypeInput="ngModel" class="form-control" type="text" name="AssetType1" [(ngModel)]="dataOutputForInput.assetTypeName" readonly>
+                                    </div>
+
+                                    <div class="col-xl-6 m--margin-top-10 ">
+                                        <label>Nhóm tài sản </label>
+                                        <input #assetGroupInput="ngModel" class="form-control" type="text" name="AssetGroup1" [(ngModel)]="dataOutputForInput.assetGroupName" readonly>
+                                    </div>
+
+                                    <div class="col-xl-12 m--margin-top-10 ">
+                                        <label>Thông tin mô tả </label>
+                                        <input #descriptionInput="ngModel" class="form-control" type="text" name="Description1" [(ngModel)]="dataOutputForInput.description" readonly>
+                                    </div>
+
+                                    <div class="col-xl-6 m--margin-top-10 ">
+                                        <label>Ngày bắt đầu khấu hao </label>
+                                        <input #exportingDayInput="ngModel" class="form-control" type="text" name="ExportingDay1" [(ngModel)]="exportingDayString" readonly>  
+                                    </div>
+
+                                    <div class="col-xl-6 m--margin-top-10 ">
+                                        <label>Số tháng khấu hao </label>
+                                        <input #totalMonthDepreciationInput="ngModel" class="form-control" type="text" name="TotalMonthDepreciation1" [(ngModel)]="dataOutputForInput.totalMonthDepreciation" readonly>
+                                    </div>
+
+                                    <div class="col-xl-6 m--margin-top-10 ">
+                                        <label>Ngày kết thúc khấu hao </label>
+                                        <input #exportingDayEndInput="ngModel" class="form-control" type="text" name="ExportingDayEnd1" [(ngModel)]="exportingDayEndString" readonly>
+                                    </div>
+
+                                    <div class="col-xl-6 m--margin-top-10 ">
+                                        <label>Nguyên giá tài sản</label>
+                                        <input #originalPriceInput="ngModel" class="form-control" type="text" name="OriginalPrice1" [(ngModel)]="dataOutputForInput.originalPrice" readonly>
+                                    </div>
+
+                                    <div class="col-xl-6 m--margin-top-10 ">
+                                        <label>Giá trị khấu hao</label>
+                                        <input #depreciationValueInput="ngModel" class="form-control" type="text" name="DepreciationValue1" [(ngModel)]="dataOutputForInput.depreciationValue" readonly>
+                                    </div>
+
+                                    <div class="col-xl-6 m--margin-top-10 ">
+                                        <label>Giá trị khấu hao còn lại</label>
+                                        <input #remainingDepValueInput="ngModel" class="form-control" type="text" name="RemainingDepValue1" [(ngModel)]="dataOutputForInput.remainingDepValue" readonly>
+                                    </div>
+
+                                    <div class="col-xl-6 m--margin-top-10 ">
+                                        <label>Tình trạng tài sản</label>
+                                        <input #isActiveInput="ngModel" class="form-control" type="text" name="IsActive1" [(ngModel)]="dataOutputForInput.isActive" readonly>
+                                    </div>
+
+                                    <div class="col-xl-6 m--margin-top-10 ">
+                                        <label>Tình trạng khấu hao</label>
+                                        <input #depreciationStatusInput="ngModel" class="form-control" type="text" name="DepreciationStatus1" [(ngModel)]="dataOutputForInput.depreciationStatus" readonly>
+                                    </div>
+
+                                    <div class="col-xl-6 m--margin-top-10 ">
+                                        <label>Đơn vị sử dụng</label>
+                                        <input #usingUnitInput="ngModel" class="form-control" type="text" name="UsingUnit1" [(ngModel)]="dataOutputForInput.usingUnitName" readonly>
+                                    </div>
+
+                                    <div class="col-xl-6 m--margin-top-10 ">
+                                        <label>Người sử dụng</label>
+                                        <input #usingPersonInput="ngModel" class="form-control" type="text" name="UsingPerson1" [(ngModel)]="dataOutputForInput.usingUserName" readonly>
+                                    </div>
+
+                                    <div class="col-xl-6 m--margin-top-10  ">
+                                        <label>Đơn vị nhận</label>
+                                        <div class="input-group">
+
+                                            <input #receivingUnitInput="ngModel" class="form-control" type="text" name="ReceivingUnit1" [(ngModel)]="assetUnitDataOutput.assetUnitName" readonly>
+                                            <span class="input-group-btn  ">
+                                                <button (click)="searchUnit.showModal()" class="btn btn-primary" type="button">
+                                                    {{l("Unit List")}}
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-6 m--margin-top-10  ">
+                                        <label>Người nhận</label>
+                                        <div class="input-group">
+                                            <input #receivingUserInput="ngModel" class="form-control" type="text" name="ReceivingUser1" [(ngModel)]="assetUserDataOutput.assetUserName" readonly>
+                                            <span class="input-group-btn  ">
+                                                <button (click)="showSearchUserModal()" class="btn btn-primary" type="button">
+                                                    {{l("User List")}}
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-12 m--margin-top-10 ">
+                                        <label>Ghi chú</label>
+                                        <input #noteInput="ngModel" class="form-control" type="text" name="Note1" [(ngModel)]="note">
+                                        <validation-messages [formCtrl]="noteInput"></validation-messages>
+                                    </div>
+
+                                    <div class="col-xl-6 m--margin-top-10 ">
+                                        <label>File đính kèm (Nếu có thì nhập vào email để gửi )</label>
+                                        <input #attachingFileNameInputInput="ngModel" class="form-control" type="text" name="AttachingFileName1" [(ngModel)]="attachingFileName">
+                                        <validation-messages [formCtrl]="attachingFileNameInputInput"></validation-messages>
+                                    </div>
+
+                                    <div class="col-xl-6 m--margin-top-40-desktop m--margin-top-20-tablet-and-mobile" align="right">
+                                        <button type="button" (click)="checkAsset()" class="btn btn-default" >{{l("Check")}}</button>
+                                        <button [disabled]="saving" type="button" class="btn btn-default" [routerLink]="['/app/gwebsite/transferring-asset']">{{l("Cancel")}}</button>
+                                        <button type="submit" class="btn btn-primary" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
+                                            <i class="fa fa-save"></i>
+                                            <span>{{l("Save")}}</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <searchAssetComponent #searchAsset (modalSave)="getAsset($event)"></searchAssetComponent>
+    <searchUnitComponent #searchUnit (modalSave)="getUnit($event)"></searchUnitComponent>
+    <searchUserComponent #searchUser (modalSave)="getUser($event)" [assetUnitIdFromUnitForm]="receivingUnit"></searchUserComponent>
+</div>

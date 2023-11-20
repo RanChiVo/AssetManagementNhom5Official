@@ -1,0 +1,122 @@
+<div bsModal #searchModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+aria-labelledby="searchModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+            <form #editForm="ngForm" novalidate (ngSubmit)="acccept()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                    <span>{{l("Tim kiếm tài sản")}}:</span>
+                    </h4>
+                <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+
+                <div class="modal-body">
+                    <form role="form">
+                        <div class="m-form m-form--label-align-right " id="TextsFilterForm">
+                            <div class="row align-items-center m--margin-bottom-10 ">
+                                <div class="col-sm-12">
+                                    <div class="input-group">
+                                        <div class="col-xl-12 m--margin-top-10">
+                                            <label>{{l('Asset Name')}}</label>
+                                            <input [(ngModel)]="assetName" name="assetName" class="form-control" placeholder="Nhập tên tài sản" type="text">
+                                        </div>
+                                        <div class="col-xl-6 m--margin-top-10">
+                                            <label> {{l('SelectedAssetId')}}</label>
+                                            <input [(ngModel)]="selectedAssetId" name="selectedAssetId" class="form-control" type="text" readonly>
+                                        </div>
+                                        <div class="col-xl-6 m--margin-top-40-desktop m--margin-top-20-tablet-and-mobile" align="right">
+                                            <button (click)="applyFilters()" class="btn btn-primary" type="button">
+                                                <i class="icon-refresh"></i>
+                                                {{l("Refresh")}}
+                                            </button>
+                                            <button [buttonBusy]="saving" (click)="acccept()" class="btn btn-primary "
+                                                    [busyText]="l('SavingWithThreeDot')">
+                                                <i class="fa fa-save"></i>
+                                                <span>{{l("Select and Close")}}</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="row align-items-center">
+                            <!--<Primeng-TurboTable-Start>-->
+                            <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                                <p-table #dataTable (onLazyLoad)="getAssets($event)" [value]="primengTableHelper.records"
+                                         rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true" [responsive]="primengTableHelper.isResponsive">
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th pSortableColumn="id">
+                                                Mã tài sản
+                                                <p-sortIcon field="name"></p-sortIcon>
+                                            </th>
+                                            <th pSortableColumn="name">
+                                                Tên tài sản
+                                                <p-sortIcon field="name"></p-sortIcon>
+                                            </th>
+                                           
+                                            <th pSortableColumn="assetTypeId">
+                                                Loại tài sản
+                                            </th>
+                                            <th pSortableColumn="isActive">
+                                                Trạng thái đang hoạt động
+                                            </th>
+                                            <th>{{l('Select Asset')}}</th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-record="$implicit">
+                                        <tr>
+                                            <td>
+                                                <span class="ui-column-title">Mã tài sản</span>
+                                                <span title="{{record.assetId}}">{{truncateString(record.assetId)}}</span>
+                                            </td>
+                                            <td>
+                                                <span class="ui-column-title">Tên tài sản</span>
+                                                <span title="{{record.name}}">{{truncateString(record.name)}}</span>
+                                            </td>
+                                            <td>
+                                                <span class="ui-column-title">Loại tài sản</span>
+                                                <span title="{{record.assetType}}">{{truncateString(record.typeofAsset)}}</span>
+                                            </td>
+                                            <td>
+                                                <span class="ui-column-title">Trạng thái đang hoạt động</span>
+                                                <span title="{{record.isActive}}">{{truncateString(record.isActive)}}</span>
+                                            </td>
+
+                                            <td>
+                                                <button class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                                        (click)="getIdofSelectedAsset(record.assetId)" type="button" title="{{l('Click To Choose Asset')}}">
+                                                    <i class="fa fa-plus" [attr.aria-label]="l('Click To Choose Asset')"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                                <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                    {{l('NoData')}}
+                                </div>
+                                <div class="primeng-paging-container">
+                                    <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}" #paginator (onPageChange)="getAssets($event)"
+                                                 [totalRecords]="primengTableHelper.totalRecordsCount" [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                    </p-paginator>
+                                    <span class="total-records-count">
+                                        {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                                    </span>
+                                </div>
+                            </div>
+                            <!--<Primeng-TurboTable-End>-->
+                        </div>
+                </div>
+                <div class="modal-footer">
+                        <button [disabled]="saving" (click)="close()" type="button" class="btn btn-default">
+                            <i class="ui-icon-cancel"> {{l("Cancel")}}</i>
+                        </button>
+                    </div>
+            </form>
+         </div>
+    </div>
+</div>

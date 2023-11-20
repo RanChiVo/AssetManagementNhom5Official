@@ -1,0 +1,85 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{ backdrop: 'static' }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="operatevehicle.id">Cập nhật operate</span>
+                        <span *ngIf="!operatevehicle.id">Tạo mới operate</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <button (click)="showXe()" class="btn btn-primary" type="button">
+                            <i class="icon-refresh"></i>
+                            {{ l("Mở xe") }}
+                        </button>
+                        <div class="form-group">
+                            <label>Mã xe *</label>
+                            <input #maxeInput="ngModel" class="form-control" type="text" name="idVehicle"
+                                [(ngModel)]="xe.idVehicle" required disabled maxlength="64" />
+                            <validation-messages [formCtrl]="maxeInput"></validation-messages>
+                        </div>
+                        <div class="form-group">
+                            <label>Tên xe *</label>
+                            <input #tenxeInput="ngModel" class="form-control" type="text" name="Name"
+                                [(ngModel)]="xe.name" required disabled maxlength="64" />
+                            <validation-messages [formCtrl]="tenxeInput"></validation-messages>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Mã vận hành *</label>
+                        <input #mavhInput class="form-control" type="text" name="maVanHanh"
+                            [(ngModel)]="operatevehicle.maVanHanh" required maxlength="64" />
+                        <validation-messages [formCtrl]="mavhInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày vận hành *</label>
+                        <input #nameInput class="form-control" type="date" name="ngayVanHanh"
+                            [(ngModel)]="operatevehicle.ngayVanHanh" required maxlength="64" />
+                        <validation-messages [formCtrl]="nameInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Số km *</label>
+                        <input #numberInput class="form-control" type="number" name="soKm"
+                            [(ngModel)]="operatevehicle.soKm" required maxlength="64" />
+                        <validation-messages [formCtrl]="numberInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Xăng tiêu thụ*</label>
+                        <input #numberInput class="form-control" type="text" name="xangTieuThu"
+                            [(ngModel)]="operatevehicle.xangTieuThu" required maxlength="64" />
+                        <validation-messages [formCtrl]="numberInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Trạng thái duyệt *</label>
+                        <input #numberInput class="form-control" type="text" name="trangThaiDuyet"
+                            [(ngModel)]="operatevehicle.trangThaiDuyet" required maxlength="64" />
+                        <validation-messages [formCtrl]="numberInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Ghi chú *</label>
+                        <input #numberInput class="form-control" type="text" name="ghiChu"
+                            [(ngModel)]="operatevehicle.ghiChu" required maxlength="64" />
+                        <validation-messages [formCtrl]="numberInput"></validation-messages>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">
+                        {{ l("Cancel") }}
+                    </button>
+                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')">
+                        <i class="fa fa-save"></i> <span>{{ l("Save") }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <selectVehicleModal #selectVehicleModal (modalSave)="updateVehicle()"></selectVehicleModal>
+    <selectVehicleModal #selectVehicleModal></selectVehicleModal>
+</div>

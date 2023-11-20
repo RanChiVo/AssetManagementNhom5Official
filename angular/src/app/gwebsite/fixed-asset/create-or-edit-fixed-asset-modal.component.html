@@ -1,0 +1,105 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="fixedAsset.id">Cập nhật tài sản: {{fixedAsset.name}}</span>
+                        <span *ngIf="!fixedAsset.id">Tạo mới tài sản</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Mã tài sản *</label>
+                        <input #idInput="ngModel" class="form-control" type="text" name="Name" [(ngModel)]="fixedAsset.id" required maxlength="64">
+                        <validation-messages [formCtrl]="idInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Tên tài sản *</label>
+                        <input #nameInput="ngModel" class="form-control" type="text" name="Name" [(ngModel)]="fixedAsset.name" required maxlength="64">
+                        <validation-messages [formCtrl]="nameInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Mô tả</label>
+                        <input #descriptionInput="ngModel" class="form-control" type="text" name="Description" [(ngModel)]="fixedAsset.description" required maxlength="64">
+                        <validation-messages [formCtrl]="descriptionInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Loại tài sản</label>
+                        <select #typeofAssetInput="ngModel" size="1" class="form-control" [(ngModel)]="selected" name="TypeofAsset" required maxlength="64">
+                            <option *ngFor="let selected of typeAssets" [value]="selected">{{selected}}</option>
+                            <validation-messages [formCtrl]="typeofAssetInput"></validation-messages>  
+                            </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Chi phí vận hành </label>
+                        <input #operatingCostsInput="ngModel" class="form-control" type="text" name="OperatingCosts" [(ngModel)]="fixedAsset.operatingCosts" required maxlength="64">
+                        <validation-messages [formCtrl]="operatingCostsInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Giá trị khấu hao *</label>
+                        <input #depreciationValueInput="ngModel" class="form-control" type="text" name="DepreciationValue" [(ngModel)]="fixedAsset.depreciationValue" required maxlength="64">
+                        <validation-messages [formCtrl]="depreciationValueInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Số lượng *</label>
+                        <input #quantityInput="ngModel" class="form-control" type="text" name="Quantity" [(ngModel)]="fixedAsset.quantity" required maxlength="64">
+                        <validation-messages [formCtrl]="quantityInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Mã thẻ tài sản *</label>
+                        <input class="form-control" type="text" name="AssetTag" [(ngModel)]="fixedAsset.assetTag" required maxlength="64">
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày mua </label>
+                        <input #purchaseDateInput="ngModel" class="form-control" type="text" name="PurchaseDate" [(ngModel)]="fixedAsset.purchaseDate" required maxlength="64">
+                        <validation-messages [formCtrl]="purchaseDateInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Nơi mua </label>
+                        <input #purchaseFromInput="ngModel" class="form-control" type="text" name="PurchaseFrom" [(ngModel)]="fixedAsset.purchaseFrom" required maxlength="64">
+                        <validation-messages [formCtrl]="purchaseFromInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Giá *</label>
+                        <input #costInput="ngModel" class="form-control" type="text" name="Cost" [(ngModel)]="fixedAsset.cost" required maxlength="64">
+                        <validation-messages [formCtrl]="costInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Đang hoạt động</label><br />
+                        <mat-slide-toggle #isAcAssetInput="ngModel" color="primary" [(ngModel)]="fixedAsset.isActive" name="IsActive">{{fixedAsset.isActive}}</mat-slide-toggle>
+                        <validation-messages [formCtrl]="typeofAssetInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Thể loại </label>
+                        <input #categocyInput="ngModel" class="form-control" type="text" name="Categocy" [(ngModel)]="fixedAsset.categocy" required maxlength="64">
+                        <validation-messages [formCtrl]="categocyInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Vị trí </label>
+                        <input #locationInput="ngModel" class="form-control" type="text" name="Location" [(ngModel)]="fixedAsset.location" required maxlength="64">
+                        <validation-messages [formCtrl]="locationInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Mã đặt hàng (PO Number)</label>
+                        <input #poNumberInput="ngModel" class="form-control" type="text" name="PoNumber" [(ngModel)]="fixedAsset.poNumber" required maxlength="64">
+                        <validation-messages [formCtrl]="poNumberInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Ảnh</label>
+                        <img [src]="imageURL" height="200" width="200" position="center" *ngIf="imageURL">
+                        <input #file type="file" accept='image/*' (change)="chooseImage(file.files)">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

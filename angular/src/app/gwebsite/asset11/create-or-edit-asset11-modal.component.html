@@ -1,0 +1,173 @@
+<div
+    bsModal
+    #createOrEditModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="asset11.id"
+                            >Update Asset11: {{ asset11.name }}</span
+                        >
+                        <span *ngIf="!asset11.id">Create New Asset11</span>
+                    </h4>
+                    <button
+                        type="button"
+                        class="close"
+                        (click)="close()"
+                        [attr.aria-label]="l('Close')"
+                    >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Asset Name *</label>
+                        <input
+                            #nameInput="ngModel"
+                            class="form-control"
+                            type="text"
+                            name="Name"
+                            [(ngModel)]="asset11.name"
+                            required
+                            maxlength="64"
+                        />
+                        <validation-messages
+                            [formCtrl]="nameInput"
+                        ></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Asset ID *</label>
+                        <input
+                            #assetIdInput="ngModel"
+                            class="form-control"
+                            type="text"
+                            name="AssetId"
+                            [(ngModel)]="asset11.assetId"
+                            required
+                            maxlength="64"
+                        />
+                        <validation-messages
+                            [formCtrl]="assetIdInput"
+                        ></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Price *</label>
+                        <input
+                            #priceInput="ngModel"
+                            class="form-control"
+                            type="text"
+                            name="Price"
+                            [(ngModel)]="asset11.price"
+                            required
+                            maxlength="64"
+                        />
+                        <validation-messages
+                            [formCtrl]="priceInput"
+                        ></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Vat *</label>
+                        <input
+                            #vatInput="ngModel"
+                            class="form-control"
+                            type="text"
+                            name="Vat"
+                            [(ngModel)]="asset11.vat"
+                            required
+                            maxlength="64"
+                        />
+                        <validation-messages
+                            [formCtrl]="vatInput"
+                        ></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Quantity *</label>
+                        <input
+                            #quantityInput="ngModel"
+                            class="form-control"
+                            type="text"
+                            name="Quantity"
+                            [(ngModel)]="asset11.quantity"
+                            required
+                            maxlength="64"
+                        />
+                        <validation-messages
+                            [formCtrl]="quantityInput"
+                        ></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Time</label>
+                        <input
+                            #timeInput="ngModel"
+                            class="form-control"
+                            type="text"
+                            name="Time"
+                            [(ngModel)]="asset11.time"
+                            required
+                            maxlength="64"
+                        />
+                        <validation-messages
+                            [formCtrl]="timeInput"
+                        ></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Debit Account*</label>
+                        <input
+                            #debitAccountInput="ngModel"
+                            class="form-control"
+                            type="text"
+                            name="DebitAccount"
+                            [(ngModel)]="asset11.debitAccount"
+                            required
+                            maxlength="64"
+                        />
+                        <validation-messages
+                            [formCtrl]="debitAccountInput"
+                        ></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Credit Account *</label>
+                        <input
+                            #creditAccountInput="ngModel"
+                            class="form-control"
+                            type="text"
+                            name="CreditAccount"
+                            [(ngModel)]="asset11.creditAccount"
+                            required
+                            maxlength="64"
+                        />
+                        <validation-messages
+                            [formCtrl]="creditAccountInput"
+                        ></validation-messages>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        [disabled]="saving"
+                        type="button"
+                        class="btn btn-default"
+                        (click)="close()"
+                    >
+                        {{ l("Cancel") }}
+                    </button>
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                        [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"
+                    >
+                        <i class="fa fa-save"></i> <span>{{ l("Save") }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,188 @@
+<div bsModal #updateRealEstateRepairModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="updateRealEstateRepairModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="realEstateRepair.id">Cập nhật mã sửa chữa: {{realEstateRepair.name}}</span>
+                        <span *ngIf="!realEstateRepair.id">Tạo mới mã sửa chữa</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body">
+                        <div class="form-group m-form__group row">
+                            <div>
+                                <label>Thông tin tài sản</label>
+                            </div>
+                            <div class="form-control">
+                                <div class="row m--margin-bottom-10">
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            <label>Mã tài sản*</label>
+                                            <input #maTaiSanInput="ngModel" class="form-control" type="text" name="maTaiSan"
+                                                   [(ngModel)]="realEstateRepair.maTaiSan" required maxlength="64" readonly>
+                                            <validation-messages [formCtrl]="maTaiSanInput"></validation-messages>
+                                            <button (click)="showRealEstate()" class="btn btn-primary" type="button">...</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            <label>Tên tài sản*</label>
+                                            <input #tenTaiSanInput="ngModel" class="form-control" type="text" name="tenTaiSan"
+                                                   [(ngModel)]="realEstateRepair.tenTaiSan" required maxlength="64" readonly>
+                                            <validation-messages [formCtrl]="tenTaiSanInput"></validation-messages>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <label>Đề xuất sửa chữa tài sản</label>
+
+                            <div class="form-control">
+                                <div class="row m--margin-bottom-10">
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            <label>Ngày đề xuất*</label>
+                                            <input #ngayDeXuatInput="ngModel" class="form-control" type="date" name="NgayDeXuat"
+                                                   [(ngModel)]="realEstateRepair.ngayDeXuat" required maxlength="64" disabled>
+                                            <validation-messages [formCtrl]="ngayDeXuatInput"></validation-messages>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            <label>Ngày dự kiến sửa xong*</label>
+                                            <input #ngayDuKienSuaXongInput="ngModel" class="form-control" type="date" name="NgayDuKienSuaXong"
+                                                   [(ngModel)]="realEstateRepair.ngayDuKienSuaXong" required maxlength="64" disabled>
+                                            <validation-messages [formCtrl]="ngayDuKienSuaXongInput"></validation-messages>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row m--margin-bottom-10">
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            <label>Đơn vị sửa chữa</label>
+                                            <input #donViSuaChuaInput="ngModel" class="form-control" type="text" name="donViSuaChua"
+                                                   [(ngModel)]="realEstateRepair.donViSuaChua" required maxlength="64" disabled>
+                                            <validation-messages [formCtrl]="donViSuaChuaInput"></validation-messages>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            <label>Đơn vị đề xuất</label>
+                                            <input #donViDeXuatInput="ngModel" class="form-control" type="text" name="donViDeXuat"
+                                                   [(ngModel)]="realEstateRepair.donViDeXuat" maxlength="64" disabled>
+                                            <validation-messages [formCtrl]="donViDeXuatInput"></validation-messages>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row m--margin-bottom-10">
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            <label>Chi phí dự kiến*</label>
+                                            <input #chiPhiDuKienInput="ngModel" class="form-control" type="text" name="chiPhiDuKien"
+                                                   [(ngModel)]="realEstateRepair.chiPhiDuKien" required maxlength="64" disabled>
+                                            <validation-messages [formCtrl]="chiPhiDuKienInput"></validation-messages>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            <label>Người đề xuất*</label>
+                                            <input #nguoiDeXuatInput="ngModel" class="form-control" type="text" name="nguoiDeXuat"
+                                                   [(ngModel)]="realEstateRepair.nguoiDeXuat" required maxlength="64" disabled>
+                                            <validation-messages [formCtrl]="nguoiDeXuatInput"></validation-messages>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row m--margin-bottom-10">
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            <label>Nhân viên phụ trách*</label>
+                                            <input #nhanVienPhuTrachInput="ngModel" class="form-control" type="text" name="nhanVienPhuTrach"
+                                                   [(ngModel)]="realEstateRepair.nhanVienPhuTrach" required maxlength="64" disabled>
+                                            <validation-messages [formCtrl]="nhanVienPhuTrachInput"></validation-messages>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group">
+                                            <label>Nội dung sửa chữa*</label>
+                                            <input #noiDungSuaChuaInput="ngModel" class="form-control" type="text" name="noiDungSuaChua"
+                                                   [(ngModel)]="realEstateRepair.noiDungSuaChua" required maxlength="64" disabled>
+                                            <validation-messages [formCtrl]="noiDungSuaChuaInput"></validation-messages>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Ghi chú</label>
+                                    <input #ghiChuInput="ngModel" class="form-control" type="text" name="ghiChu"
+                                           [(ngModel)]="realEstateRepair.ghiChu" required maxlength="64" disabled>
+                                    <validation-messages [formCtrl]="ghiChuInput"></validation-messages>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <label>Thông tin sửa chữa thực tế</label>
+                    <div class="form-control">
+                        <div class="row m--margin-bottom-10">
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label>Ngày sửa xong</label>
+                                    <input #ghiChuInput="ngModel" class="form-control" type="date" name="ghiChu"
+                                           [(ngModel)]="realEstateRepair.ghiChu" required maxlength="64">
+                                    <validation-messages [formCtrl]="ghiChuInput"></validation-messages>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label>Đơn vị sữa chữa</label>
+                                    <input #donViSuaChuaThucTeInput="ngModel" class="form-control" type="text" name="donViSuaChuaThucTe"
+                                           [(ngModel)]="realEstateRepair.donViSuaChuaThucTe" required maxlength="64">
+                                    <validation-messages [formCtrl]="donViSuaChuaThucTeInput"></validation-messages>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m--margin-bottom-10">
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label>Chi phí sửa chữa</label>
+                                    <input #chiPhiSuaChuaThucTeInput="ngModel" class="form-control" type="text" name="chiPhiSuaChuaThucTe"
+                                           [(ngModel)]="realEstateRepair.chiPhiSuaChuaThucTe" required maxlength="64">
+                                    <validation-messages [formCtrl]="chiPhiSuaChuaThucTeInput"></validation-messages>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label>Nội dung sửa chữa</label>
+                                    <input #noiDungSuaChuaThucTeInput="ngModel" class="form-control" type="text" name="noiDungSuaChuaThucTe"
+                                           [(ngModel)]="realEstateRepair.noiDungSuaChuaThucTe" required maxlength="64">
+                                    <validation-messages [formCtrl]="noiDungSuaChuaThucTeInput"></validation-messages>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Ghi chú</label>
+                            <input #ghiChuThucTeInput="ngModel" class="form-control" type="text" name="ghiChuThucTe"
+                                   [(ngModel)]="realEstateRepair.ghiChuThucTe" required maxlength="64">
+                            <validation-messages [formCtrl]="ghiChuThucTeInput"></validation-messages>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                            (click)="close()">
+                        {{l("Cancel")}}
+                    </button>
+                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                            [busyText]="l('SavingWithThreeDot')">
+                        <i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <realEstateModal #realEstateModal (modalSave)="reloadRealEstate()"></realEstateModal>
+</div>

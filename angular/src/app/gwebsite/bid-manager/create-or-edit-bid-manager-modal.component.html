@@ -1,0 +1,297 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="bidManager.id">Cập nhật công trình: {{bidManager.maHoSoThau}}</span>
+                        <span *ngIf="!bidManager.id">Tạo mới công trình</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group m-form__group row">
+                        <label>Thông tin hồ sơ thầu</label>
+                        <div class="form-control">
+                            <div class="row m--margin-bottom-10">
+                                <div class="col-xl-6">
+                                    <div class="form-group">
+                                        <label>Mã hồ sơ thầu</label>
+                                        <input #maHoSoThauInput="ngModel" class="form-control" type="text" name="maHoSoThau"
+                                               [(ngModel)]="bidManager.maHoSoThau" required maxlength="64">
+                                        <validation-messages [formCtrl]="maHoSoThauInput"></validation-messages>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <div class="form-group">
+                                        <label>Hạng mục thầu</label>
+                                        <input #hangMucThauInput="ngModel" class="form-control" type="text" name="hangMucThau"
+                                               [(ngModel)]="bidManager.hangMucThau" required maxlength="64">
+                                        <validation-messages [formCtrl]="hangMucThauInput"></validation-messages>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row m--margin-bottom-10">
+                                <div class="col-xl-6">
+                                    <div class="form-group">
+                                        <label>Ngày nhận HS thầu</label>
+                                        <input #ngayNhanHSThauInput="ngModel" class="form-control" type="date" name="ngayNhanHSThau"
+                                               [(ngModel)]="bidManager.ngayNhanHSThau" required maxlength="64">
+                                        <validation-messages [formCtrl]="ngayNhanHSThauInput"></validation-messages>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <div class="form-group">
+                                        <label>Ngày hết hạn nộp HS thầu</label>
+                                        <input #ngayHetHanNopHSThauInput="ngModel" class="form-control" type="date" name="ngayHetHanNopHSThau"
+                                               [(ngModel)]="bidManager.ngayHetHanNopHSThau" required maxlength="64">
+                                        <validation-messages [formCtrl]="ngayHetHanNopHSThauInput"></validation-messages>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row m--margin-bottom-10">
+                                <div class="col-xl-6">
+                                    <div class="form-group">
+                                        <label>Ngày mở thầu</label>
+                                        <input #ngayMoThauInput="ngModel" class="form-control" type="date" name="ngayMoThau"
+                                               [(ngModel)]="bidManager.ngayMoThau" required maxlength="64">
+                                        <validation-messages [formCtrl]="ngayMoThauInput"></validation-messages>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <div class="form-group">
+                                        <label>Hình thức thầu</label>
+                                        <select *ngIf="!bidManager.id" #bidManagerCombobox name="hinhThucThau" class="form-control"
+                                                [(ngModel)]="bidManager.hinhThucThau"
+                                                required>
+                                            <option selected disabled value="">Đấu giá</option>
+                                            <option [value]="">Đấu giá</option>
+                                            <option [value]="">Chỉ định</option>
+                                        </select>
+                                        <validation-messages [formCtrl]="hinhThucThauInput"></validation-messages>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row m--margin-bottom-10">
+                                <div class="col-xl-6">
+                                    <div class="form-group">
+                                        <label>Bão lãnh dự thầu</label>
+                                        <input #baoLanhDuThauInput="ngModel" class="form-control" type="text" name="baoLanhDuThau"
+                                               [(ngModel)]="bidManager.baoLanhDuThau" required maxlength="64">
+                                        <validation-messages [formCtrl]="baoLanhDuThauInput"></validation-messages>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <div class="form-group">
+                                        <label>Ngày hết hạn bão lãnh</label>
+                                        <input #ngayHetHanBaoLanhInput="ngModel" class="form-control" type="date" name="ngayHetHanBaoLanh"
+                                               [(ngModel)]="bidManager.ngayHetHanBaoLanh" required maxlength="64">
+                                        <validation-messages [formCtrl]="ngayHetHanBaoLanhInput"></validation-messages>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label>Thông tin về công trình</label>
+                        <div class="form-control">
+                            <div class="row m--margin-bottom-10">
+                                <div class="col-xl-6">
+                                    <div class="form-group">
+                                        <label>Dự án XDCB</label>
+                                        <input #maCongTrinhInput="ngModel" class="form-control" type="text" name="maCongTrinh"
+                                               [(ngModel)]="bidManager.maCongTrinh" required maxlength="64" readonly>
+                                        <validation-messages [formCtrl]="maCongTrinhInput"></validation-messages>
+                                        <button (click)="constructionShow()" class="btn btn-primary" type="button">...</button>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <div class="form-group">
+                                        <label>Tên dự án</label>
+                                        <input #tenCongTrinhInput="ngModel" class="form-control" type="text" name="tenCongTrinh"
+                                               [(ngModel)]="bidManager.phanTram" required maxlength="64" readonly>
+                                        <validation-messages [formCtrl]="tenCongTrinhInput"></validation-messages>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row m--margin-bottom-10">
+                                <div class="col-xl-6">
+                                    <div class="form-group">
+                                        <label>Địa chỉ công trình</label>
+                                        <input #diaChiCongTrinhInput="ngModel" class="form-control" type="text" name="diaChiCongTrinh"
+                                               [(ngModel)]="construction.diaChiCongTrinh" required maxlength="64" readonly>
+                                        <validation-messages [formCtrl]="diaChiCongTrinhInput"></validation-messages>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <div class="form-group">
+                                        <label>Mô tả công trình</label>
+                                        <input #moTaCongTrinhInput="ngModel" class="form-control" type="text" name="moTaCongTrinhInput"
+                                               [(ngModel)]="construction.moTaCongTrinh" required maxlength="64" readonly>
+                                        <validation-messages [formCtrl]="moTaCongTrinhInput"></validation-messages>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row m--margin-bottom-10">
+                                <div class="col-xl-6">
+                                    <div class="form-group">
+                                        <label>Loại công trình</label>
+                                        <input #maLoaiCongTrinhInput="ngModel" class="form-control" type="text" name="maLoaiCongTrinh"
+                                               [(ngModel)]="construction.maLoaiCongTrinh" required maxlength="64" readonly>
+                                        <validation-messages [formCtrl]="maLoaiCongTrinhInput"></validation-messages>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <div class="form-group">
+                                        <label>Diện tích công trình</label>
+                                        <input #dienTichCongTrinhInput="ngModel" class="form-control" type="text" name="dienTichCongTrinh"
+                                               [(ngModel)]="construction.dienTichCongTrinh" required maxlength="64" readonly>
+                                        <validation-messages [formCtrl]="dienTichCongTrinhInput"></validation-messages>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row m--margin-bottom-10">
+                                <div class="col-xl-6">
+                                    <div class="form-group">
+                                        <label>Kế hoạch</label>
+                                        <input #maKeHoachInput="ngModel" class="form-control" type="text" name="maKeHoachInput"
+                                               [(ngModel)]="construction.maKeHoach" required maxlength="64" readonly>
+                                        <validation-messages [formCtrl]="maKeHoachInput"></validation-messages>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <div class="form-group">
+                                        <label>Đơn vị lập KH</label>
+                                        <input #donViLapKeHoachInput="ngModel" class="form-control" type="text" name="donViLapKeHoach"
+                                               [(ngModel)]="construction.donViLapKeHoach" required maxlength="64" readonly>
+                                        <validation-messages [formCtrl]="donViLapKeHoachInput"></validation-messages>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row m--margin-bottom-10">
+                                <div class="col-xl-4">
+                                    <div class="form-group">
+                                        <label>Chi phí dự án</label>
+                                        <input #chiPhiDuocDuyetInput="ngModel" class="form-control" type="text" name="chiPhiDuocDuyet"
+                                               [(ngModel)]="construction.chiPhiDuocDuyet" required maxlength="64" readonly>
+                                        <validation-messages [formCtrl]="chiPhiDuocDuyetInput"></validation-messages>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4">
+                                    <div class="form-group">
+                                        <label>Chi phí đã dùng</label>
+                                        <input #chiPhiDaThucHienInput="ngModel" class="form-control" type="text" name="chiPhiDaThucHien"
+                                               [(ngModel)]="construction.chiPhiDaThucHien" required maxlength="64" readonly>
+                                        <validation-messages [formCtrl]="chiPhiDaThucHienInput"></validation-messages>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4">
+                                    <div class="form-group">
+                                        <label>Tiến độ</label>
+                                        <input #tienDoInput="ngModel" class="form-control" type="text" name="tienDo"
+                                               [(ngModel)]="construction.tienDo" required maxlength="64" readonly>
+                                        <validation-messages [formCtrl]="tienDoInput"></validation-messages>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Đơn vị tham gia thầu</label>
+                    <button type="button" class="btn btn-primary"
+                            (click)="contractorShow()">
+                        {{l("+")}}
+                    </button>
+                </div>
+                <div class="form-control">
+                    <div class="row align-items-center">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Mã đơn vị thầu
+                                    </th>
+                                    <th>
+                                        Tên đơn vị thầu
+                                    </th>
+                                    <th>
+                                        Ngày nộp HS thầu
+                                    </th>
+                                    <th>
+                                        Giá chào thầu
+                                    </th>
+                                    <th>
+                                        Hình thức BL
+                                    </th>
+                                    <th>
+                                        Số chứng BL
+                                    </th>
+                                    <th>
+                                        Tại ngân hàng
+                                    </th>
+                                    <th>
+                                        Trúng thầu
+                                    </th>
+                                    <th>
+                                        Xóa
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tr *ngFor="let item of dsNguoiDauThau">
+                                <td>
+                                    <span title="{{item.maDonViThau}}">{{truncateString(item.maDonViThau)}}</span>
+                                </td>
+                                <td>
+                                    <span title="{{item.tenDonViThau}}">{{truncateString(item.tenDonViThau)}}</span>
+                                </td>
+                                <td>
+                                    <span title="{{item.ngayNopHS}}">{{truncateString(item.ngayNopHS)}}</span>
+                                </td>
+                                <td>
+                                    <span title="{{item.giaChaoThau}}">{{truncateString(item.giaChaoThau)}}</span>
+                                </td>
+                                <td>
+                                    <span title="{{item.hinhThuocBL}}">{{truncateString(item.hinhThuocBL)}}</span>
+                                </td>
+                                <td>
+                                    <span title="{{item.soChungThuSL}}">{{truncateString(item.soChungThuSL)}}</span>
+                                </td>
+                                <td>
+                                    <span title="{{item.taiNganHang}}">{{truncateString(item.taiNganHang)}}</span>
+                                </td>
+                                <td>
+                                    <span title="{{item.trungThau}}">{{truncateString(item.trungThau)}}</span>
+                                </td>
+                                <td>
+                                    <span title="{{Delete}}">
+                                        <button type="button" class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                                (click)="deleteContractor(item.id)" title="{{l('Delete')}}">
+                                            <i class="fa fa-times" [attr.aria-label]="l('Delete')"></i>
+                                        </button>
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                            (click)="close()">
+                        {{l("Cancel")}}
+                    </button>
+                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                            [busyText]="l('SavingWithThreeDot')">
+                        <i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <selectConstructionModal #selectConstructionModal (modalSave)="reloadConstruction()"></selectConstructionModal>
+</div>
+<createOrEditContractorModal #createOrEditContractorModal (modalSave)="loadContractor()"></createOrEditContractorModal>

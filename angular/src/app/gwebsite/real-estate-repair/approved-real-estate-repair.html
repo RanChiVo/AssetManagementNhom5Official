@@ -1,0 +1,72 @@
+<div bsModal #approvedRealEstateRepairModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="approvedRealEstateRepairModal"
+     aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span *ngIf="realEstateRepair.id">{{l("EditRealEstateRepair")}}: {{realEstateRepair.name}}</span>
+                    <span *ngIf="!realEstateRepair.id">{{l("CreateNewRealEstateRepair")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Mã tài sản</label>
+                    <p>{{ realEstateRepair.maTaiSan}}</p>
+                </div>
+
+                <div class="form-group">
+                    <label>Ngày đề xuất</label>
+                    <p>{{realEstateRepair.ngayDeXuat}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Ngày dự kiến sửa xong</label>
+                    <p>{{realEstateRepair.ngayDuKienSuaXong}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Đơn vị sửa chữa</label>
+                    <p>{{realEstateRepair.donViSuaChua}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Đơn vị đề xuất</label>
+                    <p>{{realEstateRepair.donViDeXuat}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Chi phí dự kiến</label>
+                    <p>{{realEstateRepair.chiPhiDuKien}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Người đề xuất</label>
+                    <p>{{realEstateRepair.nguoiDeXuat}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Nhân viên phụ trách</label>
+                    <p>{{realEstateRepair.nhanVienPhuTrach}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Nội dung sửa chữa</label>
+                    <p>{{realEstateRepair.noiDungSuaChua}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Ghi chú</label>
+                    <p>{{realEstateRepair.ghiChu}}</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="no()">
+                    {{l("Từ chối")}}
+                </button>
+                <button type="button" class="btn btn-primary" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')" (click)="yes()">>
+                    <i class="fa fa-save"></i>
+                    <span>{{l("Phê Duyệt")}}</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
